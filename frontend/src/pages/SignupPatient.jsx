@@ -59,7 +59,7 @@ const SignUpPatient = () => {
                         }))}
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                     />
-                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Sign In with Email</Button>
+                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Sign Up</Button>
                 </form>
                 <p className="text-center text-gray-600 text-sm mt-6">
                     By clicking continue, you agree to our <a href="/terms" className="underline">Terms of Service</a> and <a href="/privacy" className="underline">Privacy Policy</a>.

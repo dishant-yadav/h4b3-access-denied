@@ -31,7 +31,7 @@ const LoginPatient = () => {
                     <a href="/signup/patient" className="text-gray-600">Sign Up</a>
                 </div>
                 <form onSubmit={handleLogin}>
-                    <h2 className="text-2xl font-bold text-center mb-6">Create an account</h2>
+                    <h2 className="text-2xl font-bold text-center mb-6">Login to your account</h2>
                     <label className="text-center text-gray-600 mb-6">
                         Email
                     </label>
@@ -58,7 +58,7 @@ const LoginPatient = () => {
                         }))}
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                     />
-                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Log In with Email</Button>
+                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Log In</Button>
 
                     <p className="text-center text-gray-600 text-sm mt-6">
                         By clicking continue, you agree to our <a href="/terms" className="underline">Terms of Service</a> and <a href="/privacy" className="underline">Privacy Policy</a>.

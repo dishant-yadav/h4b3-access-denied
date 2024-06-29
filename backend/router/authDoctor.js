@@ -2,21 +2,26 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Doctor = require('../model/Doctor_appointment');
+const response = require('../utils/response');
 
 const router = express.Router();
-const JWT_SECRET = 'civiryvrbouvbacsvftwflawyf'; 
+const JWT_SECRET = 'civiryvrbouvbacsvftwflawyf'; // Example, consider using environment variables
 
 // Register a new doctor
 router.post('/register', async (req, res) => {
   try {
     const { name, profilePhoto, registrationNumber, specialty, qualification, bio, phone, address, email, availability, password } = req.body;
 
+    // Check if the email already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
       return res.status(400).send('Email already in use');
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new doctor instance
     const doctor = new Doctor({
       name,
       profilePhoto,
@@ -28,13 +33,17 @@ router.post('/register', async (req, res) => {
       address,
       email,
       availability,
-      password: hashedPassword
+      password: hashedPassword  // Store the hashed password
     });
 
+    // Save the doctor to the database
     await doctor.save();
-    res.status(201).send('Doctor registered successfully');
+
+    // Respond with success message
+    res.status(201).json(response(true, 'Doctor registered successfully'));
   } catch (error) {
-    res.status(500).send(error.message);
+    // Handle errors
+    res.status(500).json(response(false, error));
   }
 });
 
@@ -42,26 +51,34 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { registrationNumber, password } = req.body;
+    // console.log(registrationNumber, password)
     const doctor = await Doctor.findOne({ registrationNumber });
     if (!doctor) {
-      return res.status(400).send('Invalid registration number and doctor does not exist');
+      throw new Error("Doctor not found")
     }
 
     const isPasswordValid = await bcrypt.compare(password, doctor.password);
+    // console.log(isPasswordValid)
     if (!isPasswordValid) {
-      return res.status(400).send('Invalid email or password');
+      throw new Error("Password not valid")
     }
 
-    const token = jwt.sign({ id: doctor._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: doctor._id }, JWT_SECRET, { expiresIn: '2d' });
 
     // Set the token as a cookie
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
-    res.status(200).json({ message: 'Login successful', doctor, token });
+    // Respond with success message and token
+    return res.status(200).json({
+      message: 'Login successful',
+      doctor,
+      token
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    // Handle errors
+    console.log(error)
+    return res.status(500).json(response(false, error));
   }
 });
-
 
 module.exports = router;

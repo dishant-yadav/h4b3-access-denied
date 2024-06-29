@@ -5,6 +5,7 @@ import Appointments from "./pages/Appointments";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import Prescription from "./pages/Prescription";
+import Meeting from "./pages/Meeting";
 import DoctorPage from "./pages/DoctorPage";
 import AppointmentBooking from "./pages/AppointmentBooking";
 import SignUp from "./pages/Signup";
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
+  },
+  {
+    path: '/meet/*',
+    element: <Meeting />,
   },
   {
     path: "/dashboard",

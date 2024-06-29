@@ -22,7 +22,7 @@ const doctorsRoute = require('./router/doctor');
 // patient appointment booking routes:-
 const patientsRoute = require('./router/patients');
 // appointment booking routes:-
-const appointmentsRoute = require('./router/appointmentBooking');
+const appointmentRoutes = require('./router/appointmentBooking');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -56,7 +56,7 @@ app.use('/doctors', doctorsRoute);
 // CRUD for Patient
 app.use('/patients', patientsRoute);
 // CRUD for appointments.
-app.use('/appointments', appointmentsRoute);
+app.use('/api/appointments', appointmentRoutes);
 
 
 // authentication routes:-

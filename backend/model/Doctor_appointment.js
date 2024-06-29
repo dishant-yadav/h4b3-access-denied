@@ -4,34 +4,35 @@ const Schema = mongoose.Schema;
 const DoctorSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: false
   },
-  profilePhoto:{
-    type : String
-  },
-  registrationNumber:{
+  profilePhoto: {
     type: String,
-    required: true
+    required: false
+  },
+  registrationNumber: {
+    type: String,
+    required: false
   },
   specialty: {
     type: String,
-    required: true
+    required: false
   },
-  qualification:{
+  qualification: {
     type: String,
-    required: true
+    required: false
   },
-  bio:{
+  bio: {
     type: String,
-    required: true
+    required: false
   },
   phone: {
     type: String,
-    required: true
+    required: false
   },
-  address:{
+  address: {
     type: String,
-    required: true
+    required: false
   },
   email: {
     type: String,
@@ -52,11 +53,11 @@ const DoctorSchema = new Schema({
       required: true
     }
   }],
-  password:{
+  password: {
     type: String,
-    default:""
+    required: true
   }
-},{
+}, {
   timestamps: true
 });
 

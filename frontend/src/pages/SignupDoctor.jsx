@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const SignUp = () => {
+const SignUpDoctor = () => {
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
@@ -16,29 +16,29 @@ const SignUp = () => {
         e.preventDefault()
         console.log(userData)
         try {
-            const response = await axios.post("http://localhost:3050/patientauth/register", userData)
+            const response = await axios.post("http://localhost:3050/doctorauth/register", userData)
             console.log('SignUp with:', response);
         }
         catch (e) {
             console.log(e)
         }
-        navigate("/login")
+        navigate("/login/doctor")
     };
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-200">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
                 <div className="text-right">
-                    <a href="/login" className="text-gray-600">Login</a>
+                    <a href="/login/doctor" className="text-gray-600">Login</a>
                 </div>
                 <form onSubmit={handleSignUp}>
                     <h2 className="text-2xl font-bold text-center mb-6">Create an account</h2>
                     <label className="text-center text-gray-600 mb-6">
-
+                        Email
                     </label>
                     <Input
                         type="email"
-                        placeholder="name@example.com"
+                        placeholder="doctor@mail.com"
                         value={userData.email}
                         onChange={(e) => setUserData((prevData) => ({
                             ...prevData,
@@ -59,7 +59,7 @@ const SignUp = () => {
                         }))}
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                     />
-                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Sign In with Email</Button>
+                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Sign In</Button>
                 </form>
                 <p className="text-center text-gray-600 text-sm mt-6">
                     By clicking continue, you agree to our <a href="/terms" className="underline">Terms of Service</a> and <a href="/privacy" className="underline">Privacy Policy</a>.
@@ -69,4 +69,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default SignUpDoctor;

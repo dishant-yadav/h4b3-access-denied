@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate()
     const [userData, setUserData] = useState({
         email: "anik@gmail.com",
         password: "1234567"
@@ -19,6 +21,7 @@ const Login = () => {
         catch (e) {
             console.log(e)
         }
+        navigate("/")
     };
 
     return (

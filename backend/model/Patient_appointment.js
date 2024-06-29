@@ -11,7 +11,7 @@ const PatientSchema = new Schema({
     required: true,
     unique: true,
   },
-  password:{
+  password: {
     type: String,
     min: 6,
   },
@@ -19,22 +19,20 @@ const PatientSchema = new Schema({
     type: Date,
     required: false,
   },
-  address:{
+  address: {
     type: String,
-    required:false
+    required: false
   },
-  gender:{
+  gender: {
     type: String,
     enum: ["male", "female", "others"],
-    default: "male", 
-    required:false
+    default: "male",
+    required: false
   },
-  mobileNumber:{
+  mobileNumber: {
     type: String,
-    required: false,
-    unique: true
   },
-  age:{
+  age: {
     type: Number,
     max: 100,
     required: false
@@ -47,11 +45,11 @@ const PatientSchema = new Schema({
     type: String,
     required: false
   },
-  bloodGroup : {
+  bloodGroup: {
     type: String,
     required: false
   },
-  bloodPressure : {
+  bloodPressure: {
     type: String,
     required: false
   },

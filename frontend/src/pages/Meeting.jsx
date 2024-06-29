@@ -2,15 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 
-import translateApi from '../api/Translate';
-import { useNavigate } from 'react-router-dom';
 
-const ROOM_ID = window.location.pathname.split('/')[2]; // Get room ID from URL
-console.log("ROOM_ID", ROOM_ID);
+import translateApi from '../api/Translate';
+import { useNavigate, useParams } from 'react-router-dom';
+
+
 
 const BACKEND = "localhost:3050";
 
 const Meeting = () => {
+  const {roomId} = useParams();
+  const ROOM_ID = roomId;
+  console.log("Room Id",ROOM_ID);
   const [conversation, setConversation]= useState([]);
   const [myStream, setMyStream] = useState();
   const [cameraBackgroundColor, setCameraBackgroundColor] = useState("red");

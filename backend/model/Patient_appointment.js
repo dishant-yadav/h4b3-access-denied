@@ -17,15 +17,15 @@ const PatientSchema = new Schema({
   },
   dateOfBirth: {
     type: Date,
-    required: true,
+    required: false,
   },
   address:{
     type: String,
-    required:true
+    required:false
   },
   gender:{
     type: String,
-    enum: ["male", "female", "others", "none"],
+    enum: ["male", "female", "others"],
     default: "none"
   },
   mobileNumber:{
@@ -37,7 +37,23 @@ const PatientSchema = new Schema({
     type: Number,
     max: 100,
     required: true
-  }
+  },
+  weight: {
+    type: String,
+    required: false
+  },
+  height: {
+    type: String,
+    required: false
+  },
+  bloodGroup : {
+    type: String,
+    required: false
+  },
+  bloodPressure : {
+    type: String,
+    required: false
+  },
 });
 
 module.exports = mongoose.model("Patient", PatientSchema);

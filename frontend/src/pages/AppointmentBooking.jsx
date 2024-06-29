@@ -41,7 +41,7 @@ const AppointmentBooking = () => {
   };
 
   return (
-    <div className="py-5 px-12 h-screen">
+    <div className="py-5 px-12 h-screen bg-gray-100">
       <div className="flex gap-2 justify-center items-center">
         <ClipboardPlus size={36} className="font-semibold" />
         <h1 className="text-3xl font-semibold">Appointment Booking</h1>
@@ -64,7 +64,7 @@ const AppointmentBooking = () => {
             />
           </div>
           {/* Time Slot  */}
-          <div className="border-2 p-4 rounded-lg shadow-md h-[28rem] w-[22rem]">
+          <div className="border-2 p-4 rounded-lg shadow-md h-[28rem] w-[22rem] bg-white">
             <h2 className="flex gap-2 items-center mb-3">
               <Clock className="text-blue-600 h-5 w-5" />
               Select Time Slot
@@ -98,8 +98,8 @@ const AppointmentBooking = () => {
         />
       </div>
       <div className="flex items-center justify-center gap-6 mt-6">
-        <Button className="w-[25%] bg-red-500 hover:bg-red-600">Cancel</Button>
-        <Button className="w-[25%] bg-blue-500 hover:bg-blue-600">
+        <Button className="w-[22%] bg-red-500 hover:bg-red-600">Cancel</Button>
+        <Button className="w-[22%] bg-blue-500 hover:bg-blue-600">
           Submit
         </Button>
       </div>

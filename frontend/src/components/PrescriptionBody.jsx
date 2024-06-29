@@ -2,11 +2,6 @@ import React from 'react'
 
 const PrescriptionBody = ({ prescriptionDetails }) => {
 
-    const getSummary = () => {
-        const summary = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste atque, omnis veritatis reiciendis sint deserunt dignissimos assumenda tempore, minus ex eligendi itaque. Et illo repellendus vel quas ullam nostrum non cupiditate ipsa eius, velit ad eum nisi dolorem modi magnam esse, nesciunt quidem ratione suscipit itaque porro omnis. Quisquam, doloremque."
-        return summary;
-    }
-
     return (
         <main className="mb-auto h-full  px-2 py-2 flex flex-col gap-4">
             <div className="">
@@ -68,7 +63,7 @@ const PrescriptionBody = ({ prescriptionDetails }) => {
             </div>
             <div>
                 <h2 className='text-base font-bold'>Summary</h2>
-                <p>{getSummary()}</p>
+                <p>{prescriptionDetails.summary}</p>
             </div>
             <div className='w-full h-1 bg-blue-600 my-1'></div>
         </main>

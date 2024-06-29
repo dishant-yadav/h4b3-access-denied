@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import ReactDOMServer from 'react-dom/server';
 import { useParams } from 'react-router-dom'
 import html2pdf from 'html2pdf.js/dist/html2pdf.min';
@@ -10,10 +10,14 @@ import PatientDetails from '@/components/PatientDetails'
 import PrescriptionBody from '@/components/PrescriptionBody'
 import { prescriptions } from '@/data'
 import SelectInput from '@/components/ui/SelectInput';
+import axios from 'axios';
 
 const Prescription = () => {
 
   const { prescId } = useParams();
+  const { state } = useLocation();
+  const { conversation } = state;
+
   const dataFromAPI = {
     "patient": {
       "id": 2,
@@ -50,7 +54,6 @@ const Prescription = () => {
 
   const { patient: patientData, doctor: doctorDetails, } = dataFromAPI
 
-
   const [newComplaint, setNewComplaint] = useState("");
   const [newTest, setNewTest] = useState("");
   const [newMedicine, setNewMedicine] = useState({
@@ -68,8 +71,33 @@ const Prescription = () => {
     "complaints": [],
     "tests": [],
     "notes": "",
-    "medicines": []
+    "medicines": [],
+    "summary": ""
   });
+
+  useEffect(() => {
+    const getSummary = async () => {
+      try {
+        const resp = await axios.post("http://localhost:3050/api/summarize/", {
+          text: conversation,
+          sum_length: 60
+        })
+        return resp;
+      }
+      catch (e) {
+        console.log(e)
+        return e;
+      }
+    }
+
+    const summary = getSummary()
+
+    setDiagnosisData((prevData) => ({
+      ...prevData,
+      summary
+    }));
+
+  }, [])
 
   const handleDiagnosis = (e) => {
     setDiagnosisData((prevData) => ({
@@ -169,8 +197,8 @@ const Prescription = () => {
 
   return (
     <div className='flex flex-col h-full justify-center items-center py-4 px-8 bg-gray-100'>
-    <img src='/assets/doctor1.png' className='absolute top-0 left-0 drop-shadow-lg shadow-black  '/>
-    <img src='/assets/doctor2.png' className='absolute top-56 right-0 drop-shadow-lg shadow-black  '/>
+      <img src='/assets/doctor1.png' className='absolute top-0 left-0 drop-shadow-lg shadow-black  ' />
+      <img src='/assets/doctor2.png' className='absolute top-56 right-0 drop-shadow-lg shadow-black  ' />
       <h1 className="block text-2xl font-semibold text-black my-4 px-6">Patient Prescription Form</h1>
       <div className='rounded-3xl w-1/2 px-6 py-4 flex flex-col justify-start items-center'>
         <Form onSubmit={handleSubmit} className="">
@@ -260,7 +288,7 @@ const Prescription = () => {
                 </div>
                 <div>
                   <label htmlFor="" className='text-sm font-medium'>Afternoon</label>
-                  <SelectInput placeholder={"Medicine/No Medicine"} className=""   options={[
+                  <SelectInput placeholder={"Medicine/No Medicine"} className="" options={[
                     {
                       name: "No Medicine", value: 0,
                     },
@@ -320,7 +348,7 @@ const Prescription = () => {
             />
           </div>
 
-          <Button className="mt-2 bg-blue-500 hover:bg-blue-600 w-full text-lg shadow-lg" type="submit"  onClick={handleSubmit} >Generate Prescription</Button>
+          <Button className="mt-2 bg-blue-500 hover:bg-blue-600 w-full text-lg shadow-lg" type="submit" onClick={handleSubmit} >Generate Prescription</Button>
         </Form>
       </div>
     </div>

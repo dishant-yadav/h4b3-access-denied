@@ -3,6 +3,7 @@ import Topbar from "@/components/Topbar";
 import React, { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -33,8 +34,25 @@ const Profile = () => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log(profileData);
+  const handleSubmit = async () => {
+    const { firstName, lastName, ...rest } = profileData;
+    const data = {
+      name: `${firstName} ${lastName}`,
+      age: profileData.age,
+      gender: profileData.gender,
+      email: profileData.email,
+      mobileNumber: profileData.phone,
+      weight: profileData.weight,
+      height: profileData.height,
+      bloodGroup: profileData.bloodGroup,
+      bloodPressure: profileData.bloodPressure
+    };
+    try {
+      const response = await axios.post("http://localhost:3050/patients/post", data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+    }
   };
 
   return (

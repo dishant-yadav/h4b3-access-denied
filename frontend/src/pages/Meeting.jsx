@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
@@ -6,13 +5,6 @@ import Peer from 'peerjs';
 import translateApi from '../api/Translate';
 
 const ROOM_ID = window.location.pathname.split('/')[2]; // Get room ID from URL
-=======
-import React, { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
-import Peer from "peerjs";
-import translateApi from "../api/Translate";
-const ROOM_ID = window.location.pathname.split("/")[2]; // Get room ID from URL
->>>>>>> Stashed changes
 console.log("ROOM_ID", ROOM_ID);
 
 const BACKEND = "localhost:3050";
@@ -73,6 +65,17 @@ const Meeting = () => {
   }
 
   useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=RSW3kofy';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+        document.body.removeChild(script);
+    };
+}, []);
+
+  useEffect(() => {
     const socket = io(BACKEND);
     socketRef.current = socket;
     console.log("Selected language: ", getSpeechLanguage());
@@ -88,25 +91,7 @@ const Meeting = () => {
       socket.emit("join-room", ROOM_ID, id);
     });
 
-<<<<<<< Updated upstream
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=RSW3kofy';
-        script.async = true;
-        document.body.appendChild(script);
 
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    useEffect(() => {
-        const socket = io(BACKEND);
-        socketRef.current = socket;
-        console.log("Selected language: ", getSpeechLanguage());
-        socket.on('connect', () => {
-            console.log('Connected to server. socket id: ', socket.id);
-=======
     const myVideo = document.createElement("video");
     myVideo.muted = true;
 
@@ -122,7 +107,7 @@ const Meeting = () => {
         const video = document.createElement("video");
         call.on("stream", (userVideoStream) => {
           addVideoStream(video, userVideoStream);
->>>>>>> Stashed changes
+
         });
       });
 
@@ -172,20 +157,9 @@ const Meeting = () => {
       toggleSpeakingRef.current.innerText = "Start Speaking";
       setSpeakingBackgroundColor("green");
 
-<<<<<<< Updated upstream
-                socket.on('user-connected', userId => {
-                    connectToNewUser(userId, stream)
-                })
-            });
-        socket.on('user-disconnected', userId => {
-            if (peers[userId]) peers[userId].close()
-        });
-    }, []);
-=======
       const recognition = new webkitSpeechRecognition();
       recognition.continuous = true;
       // recognition.interimResults = true; ---> keep it off else you will face multiple same result issue
->>>>>>> Stashed changes
 
       recognition.onstart = function () {
         recognizing = true;

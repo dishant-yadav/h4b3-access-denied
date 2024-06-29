@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
     // Set the token as a cookie
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
-    res.status(200).json({ message: 'Login successful', doctor });
+    res.status(200).json({ message: 'Login successful', doctor, token });
   } catch (error) {
     res.status(500).send(error.message);
   }

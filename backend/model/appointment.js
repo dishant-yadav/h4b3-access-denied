@@ -4,37 +4,27 @@ const Schema = mongoose.Schema;
 const AppointmentSchema = new Schema({
   doctor: {
     type: Schema.Types.ObjectId,
-    ref: "Doctor",
-    required: true,
+    ref: 'Doctor',
+    required: true
   },
   patient: {
     type: Schema.Types.ObjectId,
-    ref: "Patient",
-    required: true,
+    ref: 'Patient',
+    required: true
   },
-  appointmentDate: {
+  date: {
     type: Date,
-    required: true,
+    required: true
   },
-  startTime: {
+  time: {
     type: String,
-    required: true,
+    required: true
   },
-  endTime: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    enum: ["Scheduled", "Completed"],
-    default: "Scheduled",
-  },
-  notes:{
-    type: String
-  },
-  fileUpload:{
+  notes: {
     type: String
   }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model("Appointment", AppointmentSchema);
+module.exports = mongoose.model('Appointment', AppointmentSchema);

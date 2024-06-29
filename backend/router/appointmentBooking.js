@@ -1,59 +1,89 @@
 const express = require('express');
-const router = express.Router();
+const authMiddleware = require('../middlewares/authMiddleware');
 const Appointment = require('../model/appointment');
+const Doctor = require('../model/Doctor_appointment');
 
-// Create a new appointment
-router.post('/', async (req, res) => {
+const router = express.Router();
+
+// Create a new appointment --> done
+router.post('/post', authMiddleware, async (req, res) => {
   try {
-    const appointment = new Appointment(req.body);
+    const { doctorRegistrationNumber, patient, date, time, notes } = req.body;
+
+    // Find the doctor by registration number
+    const doctor = await Doctor.findOne({ registrationNumber: doctorRegistrationNumber });
+    if (!doctor) {
+      return res.status(400).send('Doctor not found');
+    }
+
+    const appointment = new Appointment({
+      doctor: doctor._id,
+      patient,
+      date,
+      time,
+      notes
+    });
+
     await appointment.save();
-    res.status(201).send(appointment);
+    res.status(201).send('Appointment created successfully');
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error.message);
   }
 });
 
-// Get all appointments
-router.get('/', async (req, res) => {
+// Get all appointments for a specific doctor
+router.get('/doctor/:doctorId', authMiddleware, async (req, res) => {
   try {
-    const appointments = await Appointment.find().populate('doctor').populate('patient');
+    const appointments = await Appointment.find({ doctor: req.params.doctorId }).populate('doctor').populate('patient');
     res.status(200).send(appointments);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error.message);
   }
 });
 
-// Get a specific appointment by ID
-router.get('/:id', async (req, res) => {
+
+// Get all appointments for a specific patient
+router.get('/patient/:patientId', authMiddleware, async (req, res) => {
   try {
-    const appointment = await Appointment.findById(req.params.id).populate('doctor').populate('patient');
-    if (!appointment) return res.status(404).send();
+    const appointments = await Appointment.find({ patient: req.params.patientId }).populate('doctor').populate('patient');
+    res.status(200).send(appointments);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+// Update an appointment
+router.put('/:id', authMiddleware, async (req, res) => {
+  try {
+    const { date, time, notes } = req.body;
+    const appointment = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      { date, time, notes },
+      { new: true, runValidators: true }
+    );
+    if (!appointment) {
+      return res.status(404).send('Appointment not found');
+    }
     res.status(200).send(appointment);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error.message);
   }
 });
 
-// Update an appointment by ID
-router.patch('/:id', async (req, res) => {
-  try {
-    const appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if (!appointment) return res.status(404).send();
-    res.status(200).send(appointment);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
 
-// Delete an appointment by ID
-router.delete('/:id', async (req, res) => {
+// Delete an appointment
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
-    if (!appointment) return res.status(404).send();
-    res.status(200).send(appointment);
+    if (!appointment) {
+      return res.status(404).send('Appointment not found');
+    }
+    res.status(200).send('Appointment deleted successfully');
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error.message);
   }
 });
+
 
 module.exports = router;

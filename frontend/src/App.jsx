@@ -5,6 +5,8 @@ import Appointments from "./pages/Appointments";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import Prescription from "./pages/Prescription";
+import DoctorPage from "./pages/DoctorPage";
+import AppointmentBooking from "./pages/AppointmentBooking";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "/prescription",
     element: <Prescription />,
+  },
+  {
+    path: "/doctor/:name",
+    element: <DoctorPage />,
+  },
+  {
+    path: "/booking",
+    element: <AppointmentBooking />,
   },
 ]);
 

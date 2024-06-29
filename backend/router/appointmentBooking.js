@@ -25,7 +25,7 @@ router.post('/post', authMiddleware, async (req, res) => {
     });
 
     await appointment.save();
-    res.status(201).send('Appointment created successfully');
+    res.status(201).json({message:'Appointment created successfully', doctor});
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -46,9 +46,9 @@ router.get('/doctor/:doctorId', authMiddleware, async (req, res) => {
 router.get('/patient/:patientId', authMiddleware, async (req, res) => {
   try {
     const appointments = await Appointment.find({ patient: req.params.patientId }).populate('doctor').populate('patient');
-    res.status(200).send(appointments);
+    res.status(200).json({message:appointments});
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({"message":error});
   }
 });
 
@@ -65,9 +65,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
     if (!appointment) {
       return res.status(404).send('Appointment not found');
     }
-    res.status(200).send(appointment);
+    res.status(200).json({message:"Appointment updated successfully"});
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({"error":message});
   }
 });
 
@@ -79,9 +79,9 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     if (!appointment) {
       return res.status(404).send('Appointment not found');
     }
-    res.status(200).send('Appointment deleted successfully');
+    res.status(200).json({message:"Appointment deleted successfully"});
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({"error":message});
   }
 });
 

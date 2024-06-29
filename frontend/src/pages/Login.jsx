@@ -7,16 +7,16 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const navigate = useNavigate()
     const [userData, setUserData] = useState({
-        email: "anik@gmail.com",
-        password: "1234567"
+        email: "",
+        password: ""
     });
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        console.log(userData)
         try {
             const response = await axios.post("http://localhost:3050/patientauth/login", userData)
             console.log('Login with:', response);
+            localStorage.setItem("userData", JSON.stringify(userData))
         }
         catch (e) {
             console.log(e)

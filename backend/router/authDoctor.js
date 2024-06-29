@@ -42,8 +42,9 @@ router.post('/register', async (req, res) => {
     // Respond with success message
     res.status(201).json({message: "Doctor registered successfully!!"});
   } catch (error) {
-    // Handle errors
-    res.status(500).json({message: "error in response"});
+    // Handle errors with detailed logging
+    console.error('Error during doctor registration:', error);
+    res.status(500).json({message: "error in response", error: error.message});
   }
 });
 

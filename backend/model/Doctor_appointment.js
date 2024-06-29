@@ -39,20 +39,20 @@ const DoctorSchema = new Schema({
     required: true,
     unique: true
   },
-  availability: [{
+  availability: {
     day: {
       type: String,
-      required: true
+      default: "Everyday"
     },
     startTime: {
       type: String,
-      required: true
+      default: "08:00"
     },
     endTime: {
       type: String,
-      required: true
+      default: "14:00"
     }
-  }],
+  },
   password: {
     type: String,
     required: true

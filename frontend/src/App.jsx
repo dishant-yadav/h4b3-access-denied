@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: '/meet/*',
+    path: '/meet/:roomId',
     element: <Meeting />,
   },
   {

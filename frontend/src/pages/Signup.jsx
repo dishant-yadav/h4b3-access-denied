@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import useFetch from '@/hooks/useFetch';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const navigate = useNavigate();
+
     const [userData, setUserData] = useState({
         email: "",
         pass: ""
     });
 
-    const handleSignUp = () => {
-        const { data } = useFetch("http://localhost:3050/patientauth/register")
-        console.log(data);
-        console.log('Sign up with:', userData);
+    const handleSignUp = async (e) => {
+        e.preventDefault()
+        console.log(userData)
+        try {
+            const response = await axios.post("http://localhost:3050/patientauth/register", userData)
+            console.log('Login with:', response);
+        }
+        catch (e) {
+            console.log(e)
+        }
+        navigate("/")
     };
 
     return (
@@ -49,7 +59,7 @@ const SignUp = () => {
                         }))}
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                     />
-                    <Button type="submit" onClick={handleSignUp} className="w-full p-3 bg-black text-white rounded-md">Sign In with Email</Button>
+                    <Button type="submit" className="w-full p-3 bg-black text-white rounded-md">Sign In with Email</Button>
                 </form>
                 <p className="text-center text-gray-600 text-sm mt-6">
                     By clicking continue, you agree to our <a href="/terms" className="underline">Terms of Service</a> and <a href="/privacy" className="underline">Privacy Policy</a>.

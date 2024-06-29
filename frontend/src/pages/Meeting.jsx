@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Peer from 'peerjs';
 
 import translateApi from '../api/Translate';
+import { useNavigate } from 'react-router-dom';
 
 const ROOM_ID = window.location.pathname.split('/')[2]; // Get room ID from URL
 console.log("ROOM_ID", ROOM_ID);
@@ -10,6 +11,7 @@ console.log("ROOM_ID", ROOM_ID);
 const BACKEND = "localhost:3050";
 
 const Meeting = () => {
+  const [conversation, setConversation]= useState([]);
   const [myStream, setMyStream] = useState();
   const [cameraBackgroundColor, setCameraBackgroundColor] = useState("red");
   const [speakingBackgroundColor, setSpeakingBackgroundColor] = useState("green");
@@ -19,6 +21,9 @@ const Meeting = () => {
   const toggleCameraRef = useRef(null);
   const toggleSpeakingRef = useRef(null);
   const selectLanguageRef = useRef(null);
+  const [callActive, setCallActive] = useState(false);
+  const endCallRef = useRef(null);
+  const navigate = useNavigate();
 
   // const [recognizing, setRecognizing] = useState(false);
   let recognizing = false;
@@ -114,10 +119,16 @@ const Meeting = () => {
       socket.on("user-connected", (userId) => {
         connectToNewUser(userId, stream);
       });
+      setCallActive(true);
     });
     socket.on("user-disconnected", (userId) => {
       if (peers[userId]) peers[userId].close();
     });
+
+    return () => {
+      peer.disconnect();
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -125,6 +136,7 @@ const Meeting = () => {
       console.log("RECIEVED: before translation: ", message);
       console.log("To translate to: ", getSpeechLanguage());
       let translated = "";
+      setConversation((prev)=> [...prev, {role:'Patient', content: message}])
       if (getSpeechLanguage() === "en-IN") {
         translated = message;
       } else if (getSpeechLanguage() === "Bangla India Male") {
@@ -169,6 +181,7 @@ const Meeting = () => {
       recognition.onend = function () {
         recognizing = false;
         console.log("Speech recognition stopped");
+        console.log("total spoken: ", totalResult);
       };
 
       recognition.onresult = async function (event) {
@@ -183,6 +196,7 @@ const Meeting = () => {
         if (getSpeechLanguage() === "Bangla India Male") {
           translateApi(current_result, "bn", "en").then((res) => {
             setTotalResult((prev) => prev + res + "\n");
+            setConversation((prev)=> [...prev, {role:'Doctor', content: res}])
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         }
@@ -193,19 +207,22 @@ const Meeting = () => {
             "en"
           ).then((res) => {
             setTotalResult((prev) => prev + res + "\n");
+            setConversation((prev)=> [...prev, {role:'Doctor', content: res}])
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         } else {
+          setConversation((prev)=> [...prev, {role:'Doctor', content: current_result}])
           socketRef.current.emit("message:send", ROOM_ID, current_result);
         }
       };
 
-      recognition.onend = function () {
-        recognizing = false;
-        console.log("Speech recognition stopped");
-        console.log("total spoken: ", totalResult);
-      };
+      // recognition.onend = function () {
+      //   recognizing = false;
+      //   console.log("Speech recognition stopped");
+      //   console.log("total spoken: ", totalResult);
+      // };
 
+      // eslint-disable-next-line no-inner-declarations
       function toggleSpeaking() {
         if (recognizing) {
           recognition.stop();
@@ -235,6 +252,21 @@ const Meeting = () => {
   useEffect(() => {
     toggleCameraRef.current.innerText = "Disable Camera";
   }, [])
+
+  function endCall() {
+    // Clean up streams, peers, and socket connections
+    console.log("conversation", conversation);
+    if (myStream) {
+      myStream.getTracks().forEach(track => track.stop());
+    }
+    Object.keys(peers).forEach(peerId => {
+      peers[peerId].close();
+    });
+    peerRef.current.destroy();
+    socketRef.current.disconnect();
+    setCallActive(false);
+    navigate("/appointments")
+  }
 
   return (
     <div className="px-8 py-6 h-screen bg-blue-200">
@@ -273,6 +305,17 @@ const Meeting = () => {
             ref={toggleSpeakingRef}
             className="rounded-lg text-white font-semibold shadow-md w-40"
           ></button>
+          {callActive && (
+            <button
+              id="end-call"
+              onClick={endCall}
+              ref={endCallRef}
+              style={buttonStyle}
+              className="rounded-lg text-white font-semibold shadow-md w-40 bg-red-600"
+            >
+              End Call
+            </button>
+          )}
         </div>
       </div>
     </div>

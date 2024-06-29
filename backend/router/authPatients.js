@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
 
     const existingPatient = await Patient.findOne({ email });
     if (existingPatient) {
-      return res.status(400).send('Email already in use');
+      return res.status(400).json({message:'Email already in use'});
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,9 +28,9 @@ router.post('/register', async (req, res) => {
     });
 
     await patient.save();
-    res.status(201).send('Patient registered successfully');
+    res.status(201).json({message: 'Patient registered successfully'});
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({message:"error in registering patient from backend", error});
   }
 });
 
@@ -40,12 +40,12 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const patient = await Patient.findOne({ email });
     if (!patient) {
-      return res.status(400).send('Invalid email or password');
+      return res.status(400).json({message:"patient not found"});;
     }
 
     const isPasswordValid = await bcrypt.compare(password, patient.password);
     if (!isPasswordValid) {
-      return res.status(400).send('Invalid email or password');
+      return res.status(400).json({message:"password is not valid"});;
     }
 
     const token = jwt.sign({ id: patient._id }, JWT_SECRET, { expiresIn: '1h' });
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
 
     res.status(200).json({ message: 'Login successful' });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({message:"error in logging in patient from backend", error});;
   }
 });
 

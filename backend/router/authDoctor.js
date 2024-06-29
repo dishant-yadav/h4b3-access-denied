@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
     // Check if the email already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
-      return res.status(400).send('Email already in use');
+      return res.status(400).json({message:'Email already in use'});
     }
 
     // Hash the password
@@ -33,17 +33,17 @@ router.post('/register', async (req, res) => {
       address,
       email,
       availability,
-      password: hashedPassword  // Store the hashed password
+      password: hashedPassword // Store the hashed password
     });
 
     // Save the doctor to the database
     await doctor.save();
 
     // Respond with success message
-    res.status(201).json(response(true, 'Doctor registered successfully'));
+    res.status(201).json({message: "Doctor registered successfully!!"});
   } catch (error) {
     // Handle errors
-    res.status(500).json(response(false, error));
+    res.status(500).json({message: "error in response"});
   }
 });
 
@@ -76,8 +76,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     // Handle errors
-    console.log(error)
-    return res.status(500).json(response(false, error));
+    return res.status(500).json({message:"login error"});
   }
 });
 

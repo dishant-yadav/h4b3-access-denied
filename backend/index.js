@@ -3,6 +3,8 @@ const { ExpressPeerServer } = require("peer");
 const { Server: SocketServer } = require('socket.io');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // mongoDb connection:-
 const connect = require('./configs/mongodb');
@@ -17,7 +19,7 @@ const doctorAuthRouter = require('./router/authDoctor');
 const doctorRouter = require('./router/doctorRouter');
 const userRouter = require('./router/userRouter');
 
-// doctor appoiintment booking routes:-
+// doctor appointment booking routes:-
 const doctorsRoute = require('./router/doctor');
 // patient appointment booking routes:-
 const patientsRoute = require('./router/patients');
@@ -35,21 +37,23 @@ const io = new SocketServer(server, {
     transports: ['websocket', 'polling'],
 });
 
-// const peerServer = ExpressPeerServer(server, {
-//     debug: true,
-//     path: "/",
-//     corsOptions: {
-//         origin: FRONTEND
-//     }
-// });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+const model = genAI.getGenerativeModel({
+    model: "gemini-1.0-pro-001",
+});
+
+const generationConfig = {
+    temperature: 0.9,
+    topP: 1,
+    topK: 0,
+    maxOutputTokens: 2048,
+    responseMimeType: "text/plain",
+};
 
 app.use(express.json());
-app.use(cookieParser())
-app.use(cors({ origin: FRONTEND , credentials: true}));
-
-// app.use('/auth', authRouter);
-// app.use('/doctor', doctorRouter);
-// app.use('/user', userRouter);
+app.use(cookieParser());
+app.use(cors({ origin: FRONTEND, credentials: true }));
 
 // CRUD for Doctor
 app.use('/doctors', doctorsRoute);
@@ -58,12 +62,42 @@ app.use('/patients', patientsRoute);
 // CRUD for appointments.
 app.use('/api/appointments', appointmentRoutes);
 
-
 // authentication routes:-
 // patient authentication.
 app.use('/patientauth', authRouter);
 // doctor authentication.
-app.use('/doctorauth', doctorAuthRouter)
+app.use('/doctorauth', doctorAuthRouter);
+
+// Summarization route
+app.post('/api/summarize', async (req, res) => {
+    const { text, sum_length } = req.body;
+
+    if (!text || !Array.isArray(text)) {
+        return res.status(400).json({ error: 'Invalid input. Please provide a valid text array.' });
+    }
+
+    const chatSession = model.startChat({
+        generationConfig,
+        history: [
+            {
+                role: "user",
+                parts: [
+                    {
+                        text: `You are an expert summarizer capable of understanding the content and summarizing aptly, keeping most valid information intact. Develop a summarizer that efficiently condenses the text into a concise summary. The summaries should capture essential information and convey the main points clearly and accurately. The summarizer must be able to handle content related to patient and doctor conversations. It should prioritize key facts, medical advice, diagnoses, and any prescribed treatments or next steps while maintaining the integrity and tone of the original conversation. Aim for a summary that is approximately ${sum_length} words in size. Focus on clarity, brevity, and relevance to ensure the summary is both informative and readable.`
+                    }
+                ]
+            },
+        ],
+    });
+
+    try {
+        const result = await chatSession.sendMessage(`Write a summary for the text. ${JSON.stringify(text)}`);
+        res.json({ summary: result.response.text() });
+    } catch (error) {
+        console.error('Error generating summary:', error);
+        res.status(500).json({ error: 'An error occurred while generating the summary.' });
+    }
+});
 
 app.get('/', (req, res) => {
     res.send('API working');

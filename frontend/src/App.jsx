@@ -8,7 +8,7 @@ import Prescription from "./pages/Prescription";
 import Meeting from "./pages/Meeting";
 import DoctorPage from "./pages/DoctorPage";
 import AppointmentBooking from "./pages/AppointmentBooking";
-import SignUp from "./pages/Signup";
+import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 
 const router = createBrowserRouter([
@@ -49,11 +49,11 @@ const router = createBrowserRouter([
     element: <AppointmentBooking />,
   },
   {
-    path: "/signup",
+    path: "/signup/:type",
     element: <SignUp />,
   },
   {
-    path: "/login",
+    path: "/login/:type",
     element: <Login />,
   },
 ]);

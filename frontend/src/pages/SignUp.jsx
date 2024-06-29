@@ -1,16 +1,16 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import LoginDoctor from './LoginDoctor';
-import LoginPatient from './LoginPatient';
+import SignUpDoctor from "./SignupDoctor"
+import SignUpPatient from "./SignupPatient"
 
-const Login = () => {
+const SignUp = () => {
     const { type } = useParams();
 
     console.log(type)
 
     const Form = {
-        "doctor": LoginDoctor,
-        "patient": LoginPatient
+        "doctor": SignUpDoctor,
+        "patient": SignUpPatient
     }
 
     const RenderForm = Form[type]
@@ -20,4 +20,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignUp

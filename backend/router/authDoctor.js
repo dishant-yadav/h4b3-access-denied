@@ -51,32 +51,49 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { registrationNumber, password } = req.body;
-    // console.log(registrationNumber, password)
+
+    // Find doctor by registration number
     const doctor = await Doctor.findOne({ registrationNumber });
     if (!doctor) {
-      throw new Error("Doctor not found")
+      return res.status(400).json({ success: false, message: 'Doctor not found' });
     }
 
+    // Validate password
     const isPasswordValid = await bcrypt.compare(password, doctor.password);
-    // console.log(isPasswordValid)
     if (!isPasswordValid) {
-      throw new Error("Password not valid")
+      return res.status(400).json({ success: false, message: 'Password not valid' });
     }
 
+    // Generate JWT token
     const token = jwt.sign({ id: doctor._id }, JWT_SECRET, { expiresIn: '2d' });
 
     // Set the token as a cookie
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
-    // Respond with success message and token
+    // Respond with success message, doctor details including _id, and token
     return res.status(200).json({
+      success: true,
       message: 'Login successful',
-      doctor,
+      doctor: {
+        _id: doctor._id,
+        name: doctor.name,
+        profilePhoto: doctor.profilePhoto,
+        registrationNumber: doctor.registrationNumber,
+        specialty: doctor.specialty,
+        qualification: doctor.qualification,
+        bio: doctor.bio,
+        phone: doctor.phone,
+        address: doctor.address,
+        email: doctor.email,
+        availability: doctor.availability
+        // Add any other fields you want to include
+      },
       token
     });
   } catch (error) {
     // Handle errors
-    return res.status(500).json({message:"login error"});
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 

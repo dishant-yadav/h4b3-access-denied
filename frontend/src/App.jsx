@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <Profile />,
   },
   {
-    path: "/prescription",
+    path: "/prescription/:prescId",
     element: <Prescription />,
   },
   {

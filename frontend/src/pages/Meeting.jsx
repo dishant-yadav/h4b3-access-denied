@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
+
 import translateApi from '../api/Translate';
+
 const ROOM_ID = window.location.pathname.split('/')[2]; // Get room ID from URL
 console.log("ROOM_ID", ROOM_ID);
 
@@ -61,6 +63,17 @@ const Meeting = () => {
     }
 
     useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=RSW3kofy';
+        script.async = true;
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    useEffect(() => {
         const socket = io(BACKEND);
         socketRef.current = socket;
         console.log("Selected language: ", getSpeechLanguage());
@@ -99,7 +112,7 @@ const Meeting = () => {
             });
         socket.on('user-disconnected', userId => {
             if (peers[userId]) peers[userId].close()
-        }); 
+        });
     }, []);
 
     useEffect(() => {

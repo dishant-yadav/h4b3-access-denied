@@ -168,22 +168,25 @@ const Prescription = () => {
   }
 
   return (
-    <div className='flex flex-col h-screen w-screen justify-center items-center p-2'>
-      <h1 className="block text-lg font-medium text-gray-700 my-4">Patient Prescription Form</h1>
-      <div className='border-2 border-black rounded-3xl w-1/3 px-6 py-4 flex flex-col justify-center items-center'>
+    <div className='flex flex-col h-full justify-center items-center py-4 px-8 bg-gray-100'>
+    <img src='/assets/doctor1.png' className='absolute top-0 left-0 drop-shadow-lg shadow-black  '/>
+    <img src='/assets/doctor2.png' className='absolute top-56 right-0 drop-shadow-lg shadow-black  '/>
+      <h1 className="block text-2xl font-semibold text-black my-4 px-6">Patient Prescription Form</h1>
+      <div className='rounded-3xl w-1/2 px-6 py-4 flex flex-col justify-start items-center'>
         <Form onSubmit={handleSubmit} className="">
-          <div className='mb-2 w-full'>
+          <div className='mb-4 w-full shadow-lg rounded-lg px-5 py-4 bg-white'>
             <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
               Diagnosis
             </label>
             <Input
               value={diagnosisData.diagnosis}
               onChange={handleDiagnosis}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-black/80 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              placeholder="Enter diagnosis details.."
             />
           </div>
 
-          <div className='mb-2 w-full'>
+          <div className='mb-4 w-full shadow-lg rounded-lg px-5 py-4 bg-white'>
             <label htmlFor="complaints" className="block text-sm font-medium text-gray-700">
               Complaints
             </label>
@@ -191,21 +194,22 @@ const Prescription = () => {
               <Input
                 value={newComplaint}
                 onChange={(e) => setNewComplaint(e.target.value)}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full border-black/80 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                placeholder="Enter patient complaints.."
               />
-              <Button type="button" className="ml-2" onClick={handleAddComplaint}>Add</Button>
+              <Button type="button" className="ml-2 bg-blue-500 hover:bg-blue-600" onClick={handleAddComplaint}>Add</Button>
             </div>
             <ul className="mt-2">
               {diagnosisData?.complaints?.map((complaint, index) => (
-                <li key={index} className="flex justify-between items-center bg-gray-100 p-2 my-1 rounded">
+                <li key={index} className="flex justify-between items-center text-sm font-medium bg-gray-200 py-2 px-4 my-2 rounded-lg">
                   {complaint}
-                  <Button type="button" onClick={() => handleRemoveComplaint(index)}>Delete</Button>
+                  <Button type="button" className="bg-red-500 hover:bg-red-600" onClick={() => handleRemoveComplaint(index)}>Delete</Button>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className='mb-2 w-full'>
+          <div className='mb-4 w-full shadow-lg rounded-lg px-5 py-4 bg-white'>
             <label htmlFor="complaints" className="block text-sm font-medium text-gray-700">
               Tests
             </label>
@@ -213,25 +217,26 @@ const Prescription = () => {
               <Input
                 value={newTest}
                 onChange={(e) => setNewTest(e.target.value)}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full border-black/80 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                placeholder="Enter tests to be performed by the patient.."
               />
-              <Button type="button" className="ml-2" onClick={handleAddTest}>Add</Button>
+              <Button type="button" className="ml-2 bg-blue-500 hover:bg-blue-600" onClick={handleAddTest}>Add</Button>
             </div>
             <ul className="mt-2">
               {diagnosisData?.tests?.map((test, index) => (
-                <li key={index} className="flex justify-between items-center bg-gray-100 p-2 my-1 rounded">
+                <li key={index} className="flex justify-between items-center text-sm font-medium bg-gray-200 py-2 px-4 my-2 rounded-lg">
                   {test}
-                  <Button type="button" onClick={() => handleRemoveTest(index)}>Delete</Button>
+                  <Button type="button" className="bg-red-500 hover:bg-red-600" onClick={() => handleRemoveTest(index)}>Delete</Button>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className='mb-2 w-full'>
+          <div className='mb-4 w-full shadow-lg rounded-lg px-5 py-4 bg-white'>
             <label htmlFor="medicines" className="block text-sm font-medium text-gray-700">
               Medicines
             </label>
-            <div className='mb-2'>
+            <div className='mb-3'>
               <Input
                 value={newMedicine.name}
                 onChange={(e) => setNewMedicine({ ...newMedicine, name: e.target.value })}
@@ -239,11 +244,11 @@ const Prescription = () => {
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
             </div>
-            <div className='mb-2'>
+            <div className='mb-3'>
               <label className="block text-sm font-medium text-gray-700">Dosage</label>
               <div className="flex flex-row justify-between items-center gap-2">
                 <div>
-                  <label htmlFor="">Morning</label>
+                  <label htmlFor="" className='text-sm font-medium'>Morning</label>
                   <SelectInput placeholder={"Medicine/No Medicine"} width={180} options={[
                     {
                       name: "No Medicine", value: 0,
@@ -254,8 +259,8 @@ const Prescription = () => {
                   ]} />
                 </div>
                 <div>
-                  <label htmlFor="">Afternoon</label>
-                  <SelectInput placeholder={"Medicine/No Medicine"} width={180} options={[
+                  <label htmlFor="" className='text-sm font-medium'>Afternoon</label>
+                  <SelectInput placeholder={"Medicine/No Medicine"} className=""   options={[
                     {
                       name: "No Medicine", value: 0,
                     },
@@ -265,7 +270,7 @@ const Prescription = () => {
                   ]} />
                 </div>
                 <div>
-                  <label htmlFor="">Night</label>
+                  <label htmlFor="" className='text-sm font-medium'>Night</label>
                   <SelectInput placeholder={"Medicine/No Medicine"} width={180} options={[
                     {
                       name: "No Medicine", value: 0,
@@ -277,7 +282,7 @@ const Prescription = () => {
                 </div>
               </div>
             </div>
-            <div className='mb-2'>
+            <div className='mb-3 mt-1'>
               <Input
                 value={newMedicine.duration}
                 onChange={(e) => setNewMedicine({ ...newMedicine, duration: e.target.value })}
@@ -287,34 +292,35 @@ const Prescription = () => {
             </div>
             <div className='flex flex-row justify-end'>
 
-              <Button type="button" className="mb-2" onClick={handleAddMedicine}>Add Medicine</Button>
+              <Button type="button" className="mb-2 w-full bg-blue-500 hover:bg-blue-600" onClick={handleAddMedicine}>Add Medicine</Button>
             </div>
             <ul className="mt-2">
               {diagnosisData?.medicines?.map((medicine, index) => (
-                <li key={index} className="flex justify-between items-center bg-gray-100 p-2 my-1 rounded">
+                <li key={index} className="flex justify-between items-center bg-gray-100 py-2 px-4 my-1 rounded-lg">
                   <div>
-                    <p>{medicine.name}</p>
-                    <p>{medicine.dosage}</p>
-                    <p>{medicine.duration}</p>
+                    <p className='text-sm font-medium'>{medicine.name}</p>
+                    <p className='text-sm font-medium'>{medicine.dosage}</p>
+                    <p className='text-sm font-medium'>{medicine.duration}</p>
                   </div>
-                  <Button type="button" onClick={() => handleRemoveMedicine(index)}>Delete</Button>
+                  <Button type="button" className="bg-red-500 hover:bg-red-600" onClick={() => handleRemoveMedicine(index)}>Delete</Button>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className='mb-2 w-full'>
+          <div className='mb-4 w-full shadow-lg rounded-lg px-5 py-4 bg-white'>
             <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
               Consultation Notes
             </label>
             <Input
               value={diagnosisData.notes}
               onChange={handleNotes}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full border-black/80 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              placeholder="Enter consultation notes.."
             />
           </div>
 
-          <Button className="mt-2" type="submit" onClick={handleSubmit} >Generate Prescription</Button>
+          <Button className="mt-2 bg-blue-500 hover:bg-blue-600 w-full text-lg shadow-lg" type="submit"  onClick={handleSubmit} >Generate Prescription</Button>
         </Form>
       </div>
     </div>

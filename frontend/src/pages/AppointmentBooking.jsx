@@ -41,13 +41,13 @@ const AppointmentBooking = () => {
   };
 
   return (
-    <div className="py-5 px-12 h-screen bg-gray-100">
+    <div className="py-5 px-12 h-screen bg-gradient-to-r from-blue-200 to-cyan-200">
       <div className="flex gap-2 justify-center items-center">
         <ClipboardPlus size={36} className="font-semibold" />
         <h1 className="text-3xl font-semibold">Appointment Booking</h1>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-16">
         <div className="flex justify-center items-center gap-12 mt-5">
           {/* Calender  */}
           <div className="flex flex-col p-4 gap-3 items-baseline bg-white rounded-lg border-2 shadow-md h-[28rem] w-[22rem]">

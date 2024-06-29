@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import Prescription from "./pages/Prescription";
 import DoctorPage from "./pages/DoctorPage";
 import AppointmentBooking from "./pages/AppointmentBooking";
+import SignUp from "./pages/Signup";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -41,9 +43,17 @@ const router = createBrowserRouter([
     path: "/booking",
     element: <AppointmentBooking />,
   },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 ]);
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <RouterProvider router={router} />

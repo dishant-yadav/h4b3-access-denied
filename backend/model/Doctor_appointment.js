@@ -11,7 +11,8 @@ const DoctorSchema = new Schema({
   },
   registrationNumber:{
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   specialty: {
     type: String,
@@ -27,7 +28,7 @@ const DoctorSchema = new Schema({
   },
   phone: {
     type: String,
-    required: true
+    required: false
   },
   address:{
     type: String,

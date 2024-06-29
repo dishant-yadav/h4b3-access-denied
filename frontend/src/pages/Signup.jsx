@@ -9,7 +9,7 @@ const SignUp = () => {
 
     const [userData, setUserData] = useState({
         email: "",
-        pass: ""
+        password: ""
     });
 
     const handleSignUp = async (e) => {
@@ -17,12 +17,12 @@ const SignUp = () => {
         console.log(userData)
         try {
             const response = await axios.post("http://localhost:3050/patientauth/register", userData)
-            console.log('Login with:', response);
+            console.log('SignUp with:', response);
         }
         catch (e) {
             console.log(e)
         }
-        navigate("/")
+        navigate("/login")
     };
 
     return (
@@ -52,10 +52,10 @@ const SignUp = () => {
                     <Input
                         type="password"
                         placeholder="*******"
-                        value={userData.pass}
+                        value={userData.password}
                         onChange={(e) => setUserData((prevData) => ({
                             ...prevData,
-                            pass: e.target.value
+                            password: e.target.value
                         }))}
                         className="w-full p-3 border border-gray-300 rounded-md mb-4"
                     />

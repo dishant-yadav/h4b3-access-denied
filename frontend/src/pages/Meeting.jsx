@@ -11,10 +11,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 const BACKEND = "localhost:3050";
 
 const Meeting = () => {
-  const {roomId} = useParams();
+  const { roomId } = useParams();
   const ROOM_ID = roomId;
-  console.log("Room Id",ROOM_ID);
-  const [conversation, setConversation]= useState([]);
+  console.log("Room Id", ROOM_ID);
+  const [conversation, setConversation] = useState([]);
   const [myStream, setMyStream] = useState();
   const [cameraBackgroundColor, setCameraBackgroundColor] = useState("red");
   const [speakingBackgroundColor, setSpeakingBackgroundColor] = useState("green");
@@ -79,9 +79,9 @@ const Meeting = () => {
     document.body.appendChild(script);
 
     return () => {
-        document.body.removeChild(script);
+      document.body.removeChild(script);
     };
-}, []);
+  }, []);
 
   useEffect(() => {
     const socket = io(BACKEND);
@@ -139,7 +139,7 @@ const Meeting = () => {
       console.log("RECIEVED: before translation: ", message);
       console.log("To translate to: ", getSpeechLanguage());
       let translated = "";
-      setConversation((prev)=> [...prev, {role:'Patient', content: message}])
+      setConversation((prev) => [...prev, { role: 'Patient', content: message }])
       if (getSpeechLanguage() === "en-IN") {
         translated = message;
       } else if (getSpeechLanguage() === "Bangla India Male") {
@@ -199,7 +199,7 @@ const Meeting = () => {
         if (getSpeechLanguage() === "Bangla India Male") {
           translateApi(current_result, "bn", "en").then((res) => {
             setTotalResult((prev) => prev + res + "\n");
-            setConversation((prev)=> [...prev, {role:'Doctor', content: res}])
+            setConversation((prev) => [...prev, { role: 'Doctor', content: res }])
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         }
@@ -210,11 +210,11 @@ const Meeting = () => {
             "en"
           ).then((res) => {
             setTotalResult((prev) => prev + res + "\n");
-            setConversation((prev)=> [...prev, {role:'Doctor', content: res}])
+            setConversation((prev) => [...prev, { role: 'Doctor', content: res }])
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         } else {
-          setConversation((prev)=> [...prev, {role:'Doctor', content: current_result}])
+          setConversation((prev) => [...prev, { role: 'Doctor', content: current_result }])
           socketRef.current.emit("message:send", ROOM_ID, current_result);
         }
       };
@@ -268,7 +268,12 @@ const Meeting = () => {
     peerRef.current.destroy();
     socketRef.current.disconnect();
     setCallActive(false);
-    navigate("/appointments")
+    // navigate("/appointments")
+    navigate("/prescription", {
+      state: {
+        conversation
+      }
+    })
   }
 
   return (

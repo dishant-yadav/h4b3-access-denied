@@ -25,7 +25,7 @@ router.post('/post', authMiddleware, async (req, res) => {
     });
 
     await appointment.save();
-    res.status(201).send('Appointment created successfully');
+    res.status(201).json({message:'Appointment created successfully', doctor});
   } catch (error) {
     res.status(500).send(error.message);
   }

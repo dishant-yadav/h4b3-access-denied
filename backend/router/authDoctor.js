@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
     });
 
     // Save the doctor to the database
-    await doctor.save();
+    console.log(await doctor.save());
 
     // Respond with success message
     res.status(201).json({message: "Doctor registered successfully!!"});
@@ -51,10 +51,10 @@ router.post('/register', async (req, res) => {
 // Login a doctor
 router.post('/login', async (req, res) => {
   try {
-    const { registrationNumber, password } = req.body;
+    const { email, password } = req.body;
 
     // Find doctor by registration number
-    const doctor = await Doctor.findOne({ registrationNumber });
+    const doctor = await Doctor.findOne({ email });
     if (!doctor) {
       return res.status(400).json({ success: false, message: 'Doctor not found' });
     }

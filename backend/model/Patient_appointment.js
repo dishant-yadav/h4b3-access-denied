@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const PatientSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   email: {
     type: String,
@@ -13,7 +13,7 @@ const PatientSchema = new Schema({
   },
   password:{
     type: String,
-    min:6
+    min: 6,
   },
   dateOfBirth: {
     type: Date,
@@ -26,17 +26,18 @@ const PatientSchema = new Schema({
   gender:{
     type: String,
     enum: ["male", "female", "others"],
-    default: "none"
+    default: "male", 
+    required:false
   },
   mobileNumber:{
     type: String,
-    required: true,
+    required: false,
     unique: true
   },
   age:{
     type: Number,
     max: 100,
-    required: true
+    required: false
   },
   weight: {
     type: String,

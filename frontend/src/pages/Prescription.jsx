@@ -14,7 +14,6 @@ import SelectInput from '@/components/ui/SelectInput';
 const Prescription = () => {
 
   const { prescId } = useParams();
-  // const prescriptionDetails = prescriptions[prescId]
   const dataFromAPI = {
     "patient": {
       "id": 2,
@@ -170,6 +169,7 @@ const Prescription = () => {
 
   return (
     <div className='flex flex-col h-screen w-screen justify-center items-center p-2'>
+      <h1 className="block text-lg font-medium text-gray-700 my-4">Patient Prescription Form</h1>
       <div className='border-2 border-black rounded-3xl w-1/3 px-6 py-4 flex flex-col justify-center items-center'>
         <Form onSubmit={handleSubmit} className="">
           <div className='mb-2 w-full'>
@@ -285,7 +285,10 @@ const Prescription = () => {
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               />
             </div>
-            <Button type="button" className="mb-2" onClick={handleAddMedicine}>Add Medicine</Button>
+            <div className='flex flex-row justify-end'>
+
+              <Button type="button" className="mb-2" onClick={handleAddMedicine}>Add Medicine</Button>
+            </div>
             <ul className="mt-2">
               {diagnosisData?.medicines?.map((medicine, index) => (
                 <li key={index} className="flex justify-between items-center bg-gray-100 p-2 my-1 rounded">
@@ -302,11 +305,11 @@ const Prescription = () => {
 
           <div className='mb-2 w-full'>
             <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-              Diagnosis
+              Consultation Notes
             </label>
             <Input
-              value={diagnosisData.diagnosis}
-              onChange={handleDiagnosis}
+              value={diagnosisData.notes}
+              onChange={handleNotes}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>

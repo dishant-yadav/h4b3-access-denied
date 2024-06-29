@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
     // Check if the email already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
-      return res.status(400).json({message:'Email already in use'});
+      return res.status(400).json({ message: 'Email already in use' });
     }
 
     // Hash the password
@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
     console.log(await doctor.save());
 
     // Respond with success message
-    res.status(201).json({message: "Doctor registered successfully!!"});
+    res.status(201).json({ message: "Doctor registered successfully!!" });
   } catch (error) {
     // Handle errors with detailed logging
     console.error('Error during doctor registration:', error);

@@ -22,6 +22,10 @@ const AppointmentSchema = new Schema({
   },
   notes: {
     type: String
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

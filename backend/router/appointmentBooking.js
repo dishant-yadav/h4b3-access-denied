@@ -2,46 +2,58 @@ const express = require('express');
 const authMiddleware = require('../middlewares/authMiddleware');
 const Appointment = require('../model/appointment');
 const Doctor = require('../model/Doctor_appointment');
-const Slot = require('../model/slotModel');
+const response = require('../utils/response');
+
+const appointmentServices = require('../services/docAppServices');
+const slotServices = require('../services/slotServices');
 
 const router = express.Router();
 
-// Create slots for a doctor
-router.post('/slots/create', authMiddleware, async (req, res) => {
+// fetch all slots for a doctor for a given date
+router.get('/slots', async (req, res) => {
   try {
-    const { doctorRegistrationNumber, date } = req.body;
-    const doctor = await Doctor.findOne({doctorRegistrationNumber});
-    if (!doctor) {
-      return res.status(400).send('Doctor not found');
+    const { doctor, date } = req.body;
+
+    let totalSlots = await appointmentServices.generateArrayFromStartAndEndTime(doctor);
+    let allSlots = await slotServices.fetchAllSlots(doctor, date);
+
+    let allSlotsWithIsBooked = [];
+
+    for (const element of totalSlots) {
+      let slot = allSlots.find(slot => slot.time === element)
+      let x = (slot) ? { time: element, isBooked: true } : { time: element, isBooked: false }
+      allSlotsWithIsBooked.push(x);
+    }
+    console.log(allSlotsWithIsBooked);
+
+    res.status(200).json(response(true, allSlotsWithIsBooked));
+  } catch (error) {
+    res.json(response(false, error));
+  }
+});
+
+// Create slots for a doctor
+router.post('/slots/create', async (req, res) => {
+  try {
+    const { doctor, patient, date, time, notes, appointment } = req.body;
+
+    const Dbdoctor = await Doctor.findById(doctor);
+    if (!Dbdoctor) {
+      throw new Error('Doctor not found');
     }
 
-    const availability = doctor.availability;
-    const slots = [];
+    if (!doctor || !patient || !date || !time) {
+      throw new Error('Missing required fields');
+    }
+    else if (await slotServices.isSlotAlreadyExists(doctor, date, time)) {
+      throw new Error('Slot already exists');
+    }
 
-    availability.forEach(slot => {
-      const { day, startTime, endTime } = slot;
-      const start = new Date(`${date}T${startTime}`);
-      const end = new Date(`${date}T${endTime}`);
-      let current = new Date(start);
+    const slot = slotServices.createSlot({ doctor, patient, date, time, notes });
 
-      while (current < end) {
-        const slotEndTime = new Date(current.getTime() + 15 * 60000);
-        if (slotEndTime <= end) {
-          slots.push({
-            doctor: doctorId,
-            date,
-            startTime: current.toISOString(),
-            endTime: slotEndTime.toISOString()
-          });
-        }
-        current = slotEndTime;
-      }
-    });
-
-    await Slot.insertMany(slots);
-    res.status(201).json({ message: 'Slots created successfully' , slots});
+    res.status(201).json(response(true, slot));
   } catch (error) {
-    res.status(500).send(error.message);
+    res.json(response(false, error));
   }
 });
 
@@ -70,17 +82,6 @@ router.post('/slots/book', authMiddleware, async (req, res) => {
     await slot.save();
 
     res.status(201).json({ message: 'Appointment booked successfully', appointment });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-// Get available slots for a doctor on a specific date
-router.get('/slots/available/:doctorId/:date', authMiddleware, async (req, res) => {
-  try {
-    const { doctorId, date } = req.params;
-    const slots = await Slot.find({ doctor: doctorId, date, isBooked: false });
-    res.status(200).json({ slots });
   } catch (error) {
     res.status(500).send(error.message);
   }

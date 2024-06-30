@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import BookedAppointment from "./BookedAppointment";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 // const appointments = [
 //   {
 //     patient: {
@@ -89,7 +92,7 @@ const Appointments = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`http://localhost:3050/api/appointments/`)
+        const resp = await axios.get(`${BASE_URL}/api/appointments/`)
         console.log(resp.data.data)
         setAppointments(resp.data.data)
       }

@@ -12,8 +12,9 @@ export default defineConfig({
       ULCA_USER_ID: process.env.ULCA_USER_ID ?? null,
       ULCA_API_KEY: process.env.ULCA_API_KEY ?? null,
       ULCA_AUTH_TOKEN: process.env.ULCA_AUTH_TOKEN ?? null,
-      ULCA_SERVICE_ID: process.env.ULCA_SERVICE_ID ?? null
-    }
+      ULCA_SERVICE_ID: process.env.ULCA_SERVICE_ID ?? null,
+    },
+    'process.env.VITE_BACKEND_URL': JSON.stringify(process.env.VITE_BACKEND_URL)
   },
   plugins: [react()],
   resolve: {

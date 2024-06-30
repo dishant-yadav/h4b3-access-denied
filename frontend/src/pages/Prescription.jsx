@@ -12,6 +12,9 @@ import PrescriptionBody from '@/components/PrescriptionBody'
 import SelectInput from '@/components/ui/SelectInput';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const Prescription = () => {
 
   const { prescId } = useParams();
@@ -72,7 +75,7 @@ const Prescription = () => {
   useEffect(() => {
     const fetchPrescription = async () => {
       try {
-        const response = await axios.get(`http://localhost:3050/api/appointments/${prescId}`);
+        const response = await axios.get(`${BASE_URL}/api/appointments/${prescId}`);
         console.log("response=", response);
         setPres(response.data.data);
       } catch (error) {
@@ -146,20 +149,20 @@ const Prescription = () => {
   useEffect(() => {
     const getSummary = async () => {
       try {
-        const resp = await axios.post("http://localhost:3050/api/summarize/", {
+        const resp = await axios.post(`${BASE_URL}/api/summarize/`, {
           text: conversation,
           sum_length: 60
         })
         setDiagnosisData((prevData) => ({
           ...prevData,
-          summary:resp.data.summary
+          summary: resp.data.summary
         }));
         // return resp ;
       }
       catch (e) {
         console.log(e)
         return e;
-      } 
+      }
     }
 
     getSummary()
@@ -255,7 +258,7 @@ const Prescription = () => {
         <PatientDetails diagnosis={diagnosisData.diagnosis} patientDetails={pres.patient} />
         <PrescriptionBody prescriptionDetails={diagnosisData} />
       </section>)
-  }   
+  }
 
   const pdfHandler = () => {
     const printElement = ReactDOMServer.renderToString(PrescriptionPrint());

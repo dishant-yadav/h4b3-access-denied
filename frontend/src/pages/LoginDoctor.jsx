@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const LoginDoctor = () => {
   const navigate = useNavigate();
 
@@ -28,7 +31,7 @@ const LoginDoctor = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3050/doctorauth/login",
+        `${BASE_URL}/doctorauth/login`,
         userData
       );
       console.log("Doctor Login with:", response);
@@ -82,7 +85,7 @@ const LoginDoctor = () => {
 
           <div className="text-center text-lg mt-5 font-bold text-blue-600">
             <a href="/signup/doctor" className="mt-40 text-sm">
-              <span className="text-gray-600">Don't have an Account?</span> 
+              <span className="text-gray-600">Don't have an Account?</span>
               <span className="underline"> Sign Up</span>
             </a>
           </div>

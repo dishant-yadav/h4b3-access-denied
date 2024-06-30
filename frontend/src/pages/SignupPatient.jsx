@@ -4,8 +4,14 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const SignUpPatient = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log(BASE_URL);
+  })
 
   const [userData, setUserData] = useState({
     email: "",
@@ -17,7 +23,7 @@ const SignUpPatient = () => {
     console.log(userData);
     try {
       const response = await axios.post(
-        "http://localhost:3050/patientauth/register",
+        `${BASE_URL}/patientauth/register`,
         userData
       );
       console.log("SignUp with:", response);
@@ -78,9 +84,9 @@ const SignUpPatient = () => {
           </a>
           .
           <div className="text-center text-sm font-bold text-blue-600 mt-5">
-          <span className="text-gray-500">Already Signed up? </span>
+            <span className="text-gray-500">Already Signed up? </span>
             <a href="/login/patient" className="underline">
-               Login
+              Login
             </a>
           </div>
         </p>

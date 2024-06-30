@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [doctors, setDoctors] = useState([])
@@ -28,7 +31,7 @@ const Search = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get("http://localhost:3050/doctors/get")
+        const resp = await axios.get(`${BASE_URL}/doctors/get`)
         setDoctors(resp.data)
       }
       catch (e) {
@@ -102,7 +105,7 @@ const Search = () => {
                     className="flex flex-col justify-center gap-1 px-6 py-4 bg-blue-500 shadow-lg rounded-lg transition ease-in-out delay-150 hover:scale-110 duration-300"
                   >
                     <img
-                      src={item.profilePhoto}
+                      src={item.profilePhoto || "https://img.freepik.com/free-photo/doctor-offering-medical-teleconsultation_23-2149329007.jpg"}
                       className="h-40 w-40 rounded-full"
                       alt="doctor"
                     />

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const LandingPage = () => {
   return (
@@ -13,8 +14,9 @@ const LandingPage = () => {
             <a href="#" className="mx-4 text-gray-700 hover:text-lg rounded hover:text-violet-500">Explore</a>
             <a href="#" className="mx-4 text-gray-700 hover:text-lg rounded hover:text-violet-500">Contact Us</a>
           </div>
-          <div>
-            <a href="#" className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">Get Started</a>
+          <div className="flex gap-4">
+            <Link to="/login/patient" className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">Patient Login</Link>
+            <Link to="/login/doctor" className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">Doctor Login</Link>
           </div>
         </div>
       </div>

@@ -6,9 +6,12 @@ import BookedAppointment from "./BookedAppointment";
 
 const appointments = [
   {
-    patient: "667fc0836625d388d8e01b29",
+    patient: {
+      id: "667fc0836625d388d8e01b29",
+      name: "Akash Gupta",
+    },
     doctor: {
-      id: 1,
+      id: "1",
       name: "Dr. John Smith",
       qualification: "MD",
       speciality: "Cardiologist",
@@ -36,9 +39,12 @@ const appointments = [
     isCompleted: true,
   },
   {
-    patient: "667fc0836625d388d8e01b29",
+    patient: {
+      id: "667fc0836625d388d8e01b29",
+      name: "Rahul Arora",
+    },
     doctor: {
-      id: 1,
+      id: "2",
       name: "Dr. John Doe",
       qualification: "MD",
       speciality: "Cardiologist",
@@ -81,6 +87,8 @@ const Appointments = () => {
     setSelectedAppointment(null);
   };
 
+  const user = localStorage.getItem("user");
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
@@ -97,9 +105,15 @@ const Appointments = () => {
                 className="mt-6 bg-gray-200 p-4 rounded-xl flex justify-between items-center shadow-lg"
               >
                 <div>
-                  <h1 className="text-black font-semibold text-xl mb-2">
-                    {item.doctor.name}
-                  </h1>
+                  {user === "Patient" ? (
+                    <h1 className="text-black font-semibold text-xl mb-2">
+                      {item.doctor.name}
+                    </h1>
+                  ) : (
+                    <h1 className="text-black font-semibold text-xl mb-2">
+                      {item.patient.name}
+                    </h1>
+                  )}
                   <p className="text-lg font-medium">Date: {item.date}</p>
                   <p className="text-lg font-medium">Time: {item.slot.time}</p>
                 </div>
@@ -110,7 +124,12 @@ const Appointments = () => {
                   >
                     View
                   </Button>
-                  <Button className="text-xl bg-blue-500 hover:bg-blue-600" disabled={!item.isCompleted}>Download Prescription</Button>
+                  <Button
+                    className="text-xl bg-blue-500 hover:bg-blue-600"
+                    disabled={!item.isCompleted}
+                  >
+                    Download Prescription
+                  </Button>
                 </div>
               </div>
             ))}

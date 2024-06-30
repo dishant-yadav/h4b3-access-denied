@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PatientHeader = ({ patientDetails }) => {
+const PatientHeader = ({diagnosis ,patientDetails }) => {
 
     return (
         <header className='flex flex-col justify-between px-2 py-1 border-b-4   border-blue-500'>
@@ -9,7 +9,7 @@ const PatientHeader = ({ patientDetails }) => {
             <p className='text-sm font-normal'> Registration Number : {patientDetails.registrationNo}</p>
             <div className='flex flex-row justify-between'>
                 <p className="text-base font-normal dark:text-white">{patientDetails.age} | {patientDetails.gender}</p>
-                <p className="text-base font-normal dark:text-white">Diagnosis : Fever</p>
+                <p className="text-base font-normal dark:text-white">Diagnosis : {diagnosis}</p>
             </div>
         </header>
     )

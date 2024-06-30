@@ -8,51 +8,119 @@ import { Input } from '@/components/ui/input';
 import DoctorDetails from '@/components/DoctorDetails'
 import PatientDetails from '@/components/PatientDetails'
 import PrescriptionBody from '@/components/PrescriptionBody'
-import { prescriptions } from '@/data'
+// import { prescriptions } from '@/data'
 import SelectInput from '@/components/ui/SelectInput';
 import axios from 'axios';
 
 const Prescription = () => {
 
   const { prescId } = useParams();
-  const { state } = useLocation();
-  const { conversation } = state;
+  // const { state } = useLocation();
 
-  const dataFromAPI = {
-    "patient": {
-      "id": 2,
-      "registrationNo": 12,
-      "name": "Patient 1",
-      "dateOfBirth": "1990-01-01",
-      "age": 31,
-      "gender": "Female",
-      "mobileNumber": "+1234567891",
-      "address": "Address 2",
-      "height": 171,
-      "heightUnit": "cm",
-      "weight": 61,
-      "weightUnit": "kg"
+  // const { conversation } = state;
+  const conversation = [
+    {
+      "role": "Patient",
+      "content": "Good morning, Doctor. I've been experiencing severe headaches for the past few weeks."
     },
-    "doctor": {
-      "id": 1,
-      "name": "Dr. John Smith",
-      "qualification": "MD",
-      "speciality": "Cardiologist",
-      "address": "Hospital Address 1",
-      "registrationNumber": "DOC1000",
-      "mobileNumber": "+9876543210",
-      "hospitalName": "Hospital 1",
-      "age": 45,
-      "country": "USA",
-      "description": "Dr. John Smith has over 20 years of experience in cardiology and is known for his patient-centered approach.",
-      "linkedin": "https://www.linkedin.com/in/drjohnsmith",
-      "twitter": "https://twitter.com/drjohnsmith",
-      "facebook": "https://www.facebook.com/drjohnsmith",
-      "image": "/assets/doctor.jpg"
+    {
+      "role": "Doctor",
+      "content": "Good morning. I'm sorry to hear that. Can you describe the headaches in more detail? Are they localized to a specific area, and how long do they last?"
     },
-  }
+    {
+      "role": "Patient",
+      "content": "They usually start around my temples and spread to the back of my head. Each episode lasts about an hour, and they occur almost daily."
+    },
+    {
+      "role": "Doctor",
+      "content": "I see. Have you noticed any triggers, such as specific foods, stress, or changes in your environment?"
+    },
+    {
+      "role": "Patient",
+      "content": "I think stress might be a trigger. I've been under a lot of pressure at work lately."
+    },
+    {
+      "role": "Doctor",
+      "content": "Stress can indeed be a significant factor. Have you tried any medications or remedies to alleviate the pain?"
+    },
+    {
+      "role": "Patient",
+      "content": "I've been taking over-the-counter painkillers, but they don't seem to help much."
+    },
+    {
+      "role": "Doctor",
+      "content": "Based on your symptoms, it sounds like you might be experiencing tension headaches. However, we need to rule out other possibilities. I'll prescribe a stronger pain reliever and a muscle relaxant. Additionally, I recommend trying some relaxation techniques, like deep breathing exercises and meditation. We'll also schedule a CT scan to ensure there are no underlying issues."
+    },
+    {
+      "role": "Patient",
+      "content": "Thank you, Doctor. I'll try the medication and the relaxation techniques. When should I come back for the follow-up?"
+    },
+    {
+      "role": "Doctor",
+      "content": "Let's schedule a follow-up appointment in two weeks. If your symptoms persist or worsen before then, please contact me immediately."
+    },
+    {
+      "role": "Patient",
+      "content": "Will do. Thanks again, Doctor."
+    },
+    {
+      "role": "Doctor",
+      "content": "You're welcome. Take care and see you in two weeks."
+    }
+  ]
+  const [pres, setPres] = useState();
+  useEffect(() => {
+    const fetchPrescription = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3050/api/appointments/${prescId}`);
+        console.log("response=", response);
+        setPres(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchPrescription();
+  }, [])
 
-  const { patient: patientData, doctor: doctorDetails, } = dataFromAPI
+  // const dataFromAPI = {
+  //   "patient": {
+  //     "id": 2,
+  //     "registrationNo": 12,
+  //     "name": "Patient 1",
+  //     "dateOfBirth": "1990-01-01",
+  //     "age": 31,
+  //     "gender": "Female",
+  //     "mobileNumber": "+1234567891",
+  //     "address": "Address 2",
+  //     "height": 171,
+  //     "heightUnit": "cm",
+  //     "weight": 61,
+  //     "weightUnit": "kg"
+  //   },
+  //   "doctor": {
+  //     "id": 1,
+  //     "name": "Dr. John Smith",
+  //     "qualification": "MD",
+  //     "speciality": "Cardiologist",
+  //     "address": "Hospital Address 1",
+  //     "registrationNumber": "DOC1000",
+  //     "mobileNumber": "+9876543210",
+  //     "hospitalName": "Hospital 1",
+  //     "age": 45,
+  //     "country": "USA",
+  //     "description": "Dr. John Smith has over 20 years of experience in cardiology and is known for his patient-centered approach.",
+  //     "linkedin": "https://www.linkedin.com/in/drjohnsmith",
+  //     "twitter": "https://twitter.com/drjohnsmith",
+  //     "facebook": "https://www.facebook.com/drjohnsmith",
+  //     "image": "/assets/doctor.jpg"
+  //   },
+  // }
+
+  useEffect(() => {
+
+    // const { patient, doctor } = pres
+    console.log('pres', pres)
+  }, [pres])
 
   const [newComplaint, setNewComplaint] = useState("");
   const [newTest, setNewTest] = useState("");
@@ -82,20 +150,19 @@ const Prescription = () => {
           text: conversation,
           sum_length: 60
         })
-        return resp;
+        setDiagnosisData((prevData) => ({
+          ...prevData,
+          summary:resp.data.summary
+        }));
+        // return resp ;
       }
       catch (e) {
         console.log(e)
         return e;
-      }
+      } 
     }
 
-    const summary = getSummary()
-
-    setDiagnosisData((prevData) => ({
-      ...prevData,
-      summary
-    }));
+    getSummary()
 
   }, [])
 
@@ -184,11 +251,11 @@ const Prescription = () => {
   const PrescriptionPrint = () => {
     return (
       <section>
-        <DoctorDetails doctorDetails={doctorDetails} />
-        <PatientDetails patientDetails={patientData} />
+        <DoctorDetails doctorDetails={pres.doctor} />
+        <PatientDetails diagnosis={diagnosisData.diagnosis} patientDetails={pres.patient} />
         <PrescriptionBody prescriptionDetails={diagnosisData} />
       </section>)
-  }
+  }   
 
   const pdfHandler = () => {
     const printElement = ReactDOMServer.renderToString(PrescriptionPrint());

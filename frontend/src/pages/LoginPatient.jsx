@@ -20,10 +20,11 @@ const LoginPatient = () => {
       );
       console.log("Patient Login with:", response);
       localStorage.setItem("userData", JSON.stringify(userData));
+      localStorage.setItem("user", "Patient");
     } catch (e) {
       console.log(e);
     }
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (

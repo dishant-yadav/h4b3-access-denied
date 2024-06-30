@@ -51,7 +51,8 @@ router.post('/slots/create', async (req, res) => {
       throw new Error('Slot already exists');
     }
 
-    const slot = slotServices.createSlot({ doctor, patient, date, time, notes });
+    const slot = await slotServices.createSlot({ doctor, patient, date, time, notes });
+    console.log(slot);
 
     res.status(201).json(response(true, slot));
   } catch (error) {

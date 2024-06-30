@@ -4,6 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const BookedAppointment = ({ appointment, closeModal }) => {
+  const user = localStorage.getItem("user");
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-brightness-50 backdrop-blur">
       <div className="bg-white p-6 rounded-lg w-1/4 flex flex-col gap-6">
@@ -14,13 +16,19 @@ const BookedAppointment = ({ appointment, closeModal }) => {
           </button>
         </div>
         <div>
-          <h2 className="text-xl font-bold">{appointment.doctor.name}</h2>
+          {user === "Patient" ? (
+            <h2 className="text-xl font-bold">{appointment.doctor.name}</h2>
+          ) : (
+            <h2 className="text-xl font-bold">{appointment.patient.name}</h2>
+          )}
           <p className="text-lg">Date: {appointment.date}</p>
           <p className="text-lg">Time: {appointment.slot.time}</p>
           <p className="text-lg">Notes: {appointment.notes}</p>
         </div>
         <Link to={`/meet/${appointment.id}`}>
-          <Button className="text-lg bg-blue-500 hover:bg-blue-600">Join Call</Button>
+          <Button className="text-lg bg-blue-500 hover:bg-blue-600">
+            Join Call
+          </Button>
         </Link>
       </div>
     </div>

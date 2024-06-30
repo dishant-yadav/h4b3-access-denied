@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
     });
 
     await patient.save();
-    res.status(201).json({message: 'Patient registered successfully'});
+    res.status(201).json({message: 'Patient registered successfully', patient:patient});
   } catch (error) {
     res.status(500).json({message:"error in registering patient from backend", error});
   }
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     // Set the token as a cookie
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
-    res.status(200).json({ message: 'Login successful', patientId: patient._id });
+    res.status(200).json({ message: 'Login successful', patient: patient});
   } catch (error) {
     res.status(500).json({message:"error in logging in patient from backend", error});;
   }

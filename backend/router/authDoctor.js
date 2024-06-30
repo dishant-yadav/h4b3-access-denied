@@ -37,10 +37,10 @@ router.post('/register', async (req, res) => {
     });
 
     // Save the doctor to the database
-    console.log(await doctor.save());
+    let DOC=await doctor.save();
 
     // Respond with success message
-    res.status(201).json({ message: "Doctor registered successfully!!" });
+    res.status(201).json({ message: "Doctor registered successfully!!", doctor:DOC });
   } catch (error) {
     // Handle errors with detailed logging
     console.error('Error during doctor registration:', error);

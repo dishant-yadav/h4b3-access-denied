@@ -32,11 +32,12 @@ const LoginDoctor = () => {
         userData
       );
       console.log("Doctor Login with:", response);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      localStorage.setItem("userData", JSON.stringify(response.data.doctor));
+      localStorage.setItem("user", "Doctor");
     } catch (e) {
       console.log(e);
     }
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (

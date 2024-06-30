@@ -1,23 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import io from 'socket.io-client';
-import Peer from 'peerjs';
+import React, { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
+import Peer from "peerjs";
 
-
-import translateApi from '../api/Translate';
-import { useNavigate, useParams } from 'react-router-dom';
-
-
+import translateApi from "../api/Translate";
+import { useNavigate, useParams } from "react-router-dom";
 
 const BACKEND = "localhost:3050";
 
 const Meeting = () => {
+  const user = localStorage.getItem("user");
   const { roomId } = useParams();
   const ROOM_ID = roomId;
   console.log("Room Id", ROOM_ID);
   const [conversation, setConversation] = useState([]);
   const [myStream, setMyStream] = useState();
   const [cameraBackgroundColor, setCameraBackgroundColor] = useState("red");
-  const [speakingBackgroundColor, setSpeakingBackgroundColor] = useState("green");
+  const [speakingBackgroundColor, setSpeakingBackgroundColor] =
+    useState("green");
   const socketRef = useRef(null);
   const peerRef = useRef(null);
   const videoGridRef = useRef(null);
@@ -73,8 +72,9 @@ const Meeting = () => {
   }
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://code.responsivevoice.org/responsivevoice.js?key=RSW3kofy';
+    const script = document.createElement("script");
+    script.src =
+      "https://code.responsivevoice.org/responsivevoice.js?key=RSW3kofy";
     script.async = true;
     document.body.appendChild(script);
 
@@ -99,7 +99,6 @@ const Meeting = () => {
       socket.emit("join-room", ROOM_ID, id);
     });
 
-
     const myVideo = document.createElement("video");
     myVideo.muted = true;
 
@@ -115,7 +114,6 @@ const Meeting = () => {
         const video = document.createElement("video");
         call.on("stream", (userVideoStream) => {
           addVideoStream(video, userVideoStream);
-
         });
       });
 
@@ -139,7 +137,10 @@ const Meeting = () => {
       console.log("RECIEVED: before translation: ", message);
       console.log("To translate to: ", getSpeechLanguage());
       let translated = "";
-      setConversation((prev) => [...prev, { role: 'Patient', content: message }])
+      setConversation((prev) => [
+        ...prev,
+        { role: "Patient", content: message },
+      ]);
       if (getSpeechLanguage() === "en-IN") {
         translated = message;
       } else if (getSpeechLanguage() === "Bangla India Male") {
@@ -199,7 +200,10 @@ const Meeting = () => {
         if (getSpeechLanguage() === "Bangla India Male") {
           translateApi(current_result, "bn", "en").then((res) => {
             setTotalResult((prev) => prev + res + "\n");
-            setConversation((prev) => [...prev, { role: 'Doctor', content: res }])
+            setConversation((prev) => [
+              ...prev,
+              { role: "Doctor", content: res },
+            ]);
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         }
@@ -210,11 +214,17 @@ const Meeting = () => {
             "en"
           ).then((res) => {
             setTotalResult((prev) => prev + res + "\n");
-            setConversation((prev) => [...prev, { role: 'Doctor', content: res }])
+            setConversation((prev) => [
+              ...prev,
+              { role: "Doctor", content: res },
+            ]);
             socketRef.current.emit("message:send", ROOM_ID, res);
           });
         } else {
-          setConversation((prev) => [...prev, { role: 'Doctor', content: current_result }])
+          setConversation((prev) => [
+            ...prev,
+            { role: "Doctor", content: current_result },
+          ]);
           socketRef.current.emit("message:send", ROOM_ID, current_result);
         }
       };
@@ -254,26 +264,31 @@ const Meeting = () => {
 
   useEffect(() => {
     toggleCameraRef.current.innerText = "Disable Camera";
-  }, [])
+  }, []);
 
   function endCall() {
     // Clean up streams, peers, and socket connections
     console.log("conversation", conversation);
     if (myStream) {
-      myStream.getTracks().forEach(track => track.stop());
+      myStream.getTracks().forEach((track) => track.stop());
     }
-    Object.keys(peers).forEach(peerId => {
+    Object.keys(peers).forEach((peerId) => {
       peers[peerId].close();
     });
     peerRef.current.destroy();
     socketRef.current.disconnect();
     setCallActive(false);
     // navigate("/appointments")
-    navigate("/prescription", {
-      state: {
-        conversation
-      }
-    })
+    const prescId =  localStorage.getItem("id");
+    if (user === "Doctor" && prescId) {
+      navigate(`/prescription/${prescId}`, {
+        state: {
+          conversation,
+        },
+      });
+    } else {
+      navigate("/appointments");
+    }
   }
 
   return (
@@ -284,9 +299,14 @@ const Meeting = () => {
         ref={videoGridRef}
         className="bg-black/90 rounded-2xl shadow-md py-8"
       ></div>
-      <div className="controls flex justify-between py-4 px-6" style={controlsStyle}>
+      <div
+        className="controls flex justify-between py-4 px-6"
+        style={controlsStyle}
+      >
         <div>
-          <label htmlFor="language" className="text-xl font-semibold">Choose your fluent language:</label>
+          <label htmlFor="language" className="text-xl font-semibold">
+            Choose your fluent language:
+          </label>
           <select
             id="language"
             name="language"

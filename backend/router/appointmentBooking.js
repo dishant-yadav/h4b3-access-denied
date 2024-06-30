@@ -37,9 +37,11 @@ router.get('/', async (req, res) => {
 
 
 // fetch all slots for a doctor for a given date
-router.get('/slots', async (req, res) => {
+router.post('/slots', async (req, res) => {
   try {
     const { doctor, date } = req.body;
+
+    console.log(req.body)
 
     let totalSlots = await appointmentServices.generateArrayFromStartAndEndTime(doctor);
     let allSlots = await slotServices.fetchAllSlots(doctor, date);

@@ -15,9 +15,9 @@ const SelectInput = ({ placeholder, width, options }) => {
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
-                {options.map((option) => {
+                {options.map((option, idx) => {
                     return (
-                        <SelectItem value={option.value}>{option.name}</SelectItem>
+                        <SelectItem key={idx} value={option.value}>{option.name}</SelectItem>
                     )
                 })}
             </SelectContent>

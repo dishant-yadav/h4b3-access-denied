@@ -2,21 +2,21 @@ const Slot = require('../model/Slot');
 
 const createSlot = async (
     body) => {
-    const { doctor, patient, date, time, notes, appointment } = body;
+    const { doctor, patient, date, time, notes } = body;
 
     const newSlot = await Slot.create({
         doctor,
         patient,
         date,
         time,
-        notes,
-        appointment
+        notes
     })
     return newSlot;
 }
 
-const isSlotAlreadyExists = async (doctor, date, startTime) => {
-    const slot = await Slot.findOne({ doctor, date, startTime });
+const isSlotAlreadyExists = async (doctor, date, time) => {
+    const slot = await Slot.findOne({ doctor, date, time });
+    // console.log("slot", slot);
     return !!slot; // return true if slot exists, false otherwise
 }
 

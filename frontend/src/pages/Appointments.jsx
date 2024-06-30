@@ -122,11 +122,11 @@ const Appointments = () => {
                 <div>
                   {user === "Patient" ? (
                     <h1 className="text-black font-semibold text-xl mb-2">
-                      {item.doctor.name}
+                      {item.patient?.name ?? "Patient"}
                     </h1>
                   ) : (
                     <h1 className="text-black font-semibold text-xl mb-2">
-                      {item.patient.name}
+                      {item.doctor?.name ?? "Doctor"}
                     </h1>
                   )}
                   <p className="text-lg font-medium">Date: {item.date}</p>

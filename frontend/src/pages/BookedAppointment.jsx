@@ -21,15 +21,15 @@ const BookedAppointment = ({ appointment, closeModal }) => {
         </div>
         <div>
           {user === "Patient" ? (
-            <h2 className="text-xl font-bold">{appointment.doctor.name}</h2>
+            <h2 className="text-xl font-bold">{appointment.doctor?.name ?? "Doctor"}</h2>
           ) : (
-            <h2 className="text-xl font-bold">{appointment.patient.name}</h2>
+            <h2 className="text-xl font-bold">{appointment.patient?.name ?? "Patient"}</h2>
           )}
           <p className="text-lg">Date: {appointment.date}</p>
           <p className="text-lg">Time: {appointment.time}</p>
           <p className="text-lg">Notes: {appointment.notes}</p>
         </div>
-        <Link to={`/meet/${appointment.id}`}>
+        <Link to={`/meet/${appointment._id}`}>
           <Button className="text-lg bg-blue-500 hover:bg-blue-600" onClick={handleId}>
             Join Call
           </Button>

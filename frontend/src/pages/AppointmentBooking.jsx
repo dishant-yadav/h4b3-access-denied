@@ -88,7 +88,7 @@ const AppointmentBooking = () => {
                 className="grid grid-cols-3 gap-2 
                         rounded-lg p-5"
               >
-                {timeSlot?.map((item, index) => (
+                {timeSlot.length > 0 && timeSlot.map((item, index) => (
                   <h2
                     key={index}
                     onClick={() => !item.isBooked && setSelectedTimeSlot(item.time)}

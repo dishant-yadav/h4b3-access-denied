@@ -63,6 +63,14 @@ app.use('/patients', patientsRoute);
 // CRUD for appointments.
 app.use('/api/appointments', appointmentRoutes);
 
+// UPDATE AVAILABILITY OF DOCTOR
+
+const DoctorModel = require('./model/Doctor_appointment');
+app.get('/docavail', async (req, res) => {
+    await DoctorModel.updateMany({}, { availability: { day: "Everyday", startTime: "08:00", endTime: "14:00" } })
+    res.send("Doctor availability updated");
+})
+
 // authentication routes:-
 // patient authentication.
 app.use('/patientauth', authRouter);

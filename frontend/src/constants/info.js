@@ -1,6 +1,6 @@
 const doctors = [
     {
-        "id": 1,
+        "id": "66805370e2da3025fb3c403e",
         "name": "Dr. John Smith",
         "qualification": "MD",
         "speciality": "Cardiologist",
@@ -17,7 +17,7 @@ const doctors = [
         "image": "https://img.freepik.com/free-photo/doctor-offering-medical-teleconsultation_23-2149329007.jpg"
     },
     {
-        "id": 2,
+        "id": "2",
         "name": "Dr. Jane Doe",
         "qualification": "MD",
         "speciality": "Neurologist",
@@ -34,7 +34,7 @@ const doctors = [
         "image": "https://img.freepik.com/free-photo/doctor-preparing-consult_23-2149309941.jpg?w=360&t=st=1719603589~exp=1719604189~hmac=e557cdf6424b755210a67d21afb8b25cae0ae2c38f07241eaca4f88a6ad9936e"
     },
     {
-        "id": 3,
+        "id": "3",
         "name": "Dr. Emily Johnson",
         "qualification": "MD",
         "speciality": "Dermatologist",
@@ -51,7 +51,7 @@ const doctors = [
         "image": "https://media.istockphoto.com/id/1330046035/photo/headshot-portrait-of-smiling-female-doctor-in-hospital.jpg?s=612x612&w=0&k=20&c=fsNQPbmFIxoKA-PXl3G745zj7Cvr_cFIGsYknSbz_Tg=    "
     },
     {
-        "id": 4,
+        "id": "4",
         "name": "Dr. Michael Brown",
         "qualification": "MD",
         "speciality": "Orthopedic Surgeon",

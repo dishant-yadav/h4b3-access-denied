@@ -69,7 +69,7 @@ const LoginPatient = () => {
 
           <div className="text-center text-lg mt-5 font-bold text-blue-600">
             <a href="/signup/patient" className="mt-40 text-sm">
-              <span className="text-gray-600">Don't have an Account?</span> 
+              <span className="text-gray-600">Don't have an Account?</span>
               <span className="underline"> Sign Up</span>
             </a>
           </div>

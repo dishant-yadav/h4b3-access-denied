@@ -1,12 +1,14 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ClipboardPlus, Facebook, Linkedin, ShieldCheck, Stethoscope, Twitter, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { doctors } from "@/constants/info";
 
 const DoctorPage = () => {
-  const { name } = useParams();
-  const doctor = doctors.find((doctor) => doctor.name === name);
+  const { id } = useParams();
+  const doctor = doctors.find((doctor) => doctor.id === id);
+
+  const navigate = useNavigate()
 
   if (!doctor) {
     return <div>Doctor not found</div>;
@@ -35,11 +37,17 @@ const DoctorPage = () => {
             <Facebook size={20} />
           </div>
         </div>
-        <Link to="/booking">
-          <Button className="mt-6 bg-white text-blue-600 text-lg hover:bg-white transition ease-in-out delay-150 hover:scale-110 duration-300">
-            Book Appointment
-          </Button>
-        </Link>
+        {/* <Link to="/booking"> */}
+        <Button onClick={() => {
+          navigate("/booking", {
+            state: {
+              doctor: doctor.id
+            }
+          })
+        }} className="mt-6 bg-white text-blue-600 text-lg hover:bg-white transition ease-in-out delay-150 hover:scale-110 duration-300">
+          Book Appointment
+        </Button>
+        {/* </Link> */}
       </div>
       <div className="w-[70%]">
         <div className="w-full p-6 border-2 border-blue-500  rounded-lg">
@@ -58,21 +66,21 @@ const DoctorPage = () => {
             </div>
             <div className="flex w-44 flex-col items-center justify-center py-6 px-4 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500">
               <h1 className="text-lg font-semibold text-white flex items-center">
-              <Stethoscope size={20} className="mr-1" />
+                <Stethoscope size={20} className="mr-1" />
                 <span>Consultation</span>
               </h1>
               <p className="text-4xl font-medium text-white">216</p>
             </div>
             <div className="flex w-44 flex-col items-center justify-center py-6 px-4 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500">
               <h1 className="text-lg font-semibold text-white flex items-center">
-              <ShieldCheck size={20} className="mr-1" />
+                <ShieldCheck size={20} className="mr-1" />
                 <span>Injuct</span>
               </h1>
               <p className="text-4xl font-medium text-white">106</p>
             </div>
             <div className="flex w-44 flex-col items-center justify-center py-6 px-4 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500">
               <h1 className="text-lg font-semibold text-white flex items-center">
-              <ClipboardPlus size={20} className="mr-1" />
+                <ClipboardPlus size={20} className="mr-1" />
                 <span>Surgery</span>
               </h1>
               <p className="text-4xl font-medium text-white">52</p>

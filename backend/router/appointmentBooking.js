@@ -25,6 +25,16 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+router.get('/', async (req, res) => {
+  try {
+    const appointment = await Appointment.find({}).populate('doctor').populate('patient');
+    res.status(200).json(response(true, appointment));
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(response(false, error));
+  }
+})
+
 
 // fetch all slots for a doctor for a given date
 router.post('/slots', async (req, res) => {

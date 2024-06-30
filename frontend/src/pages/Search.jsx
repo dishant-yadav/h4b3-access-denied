@@ -12,8 +12,8 @@ const Search = () => {
 
   const filteredDoctors = searchQuery
     ? doctors.filter((doctor) =>
-        doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : doctors;
 
   const departments = [
@@ -32,7 +32,7 @@ const Search = () => {
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <div className="flex flex-col w-[84%] h-screen">
-        <Topbar name="SEARCH"/>
+        <Topbar name="SEARCH" />
         <div className="flex-1 overflow-y-auto">
           <div className="px-4 flex flex-col items-center justify-center bg-gray-100 pt-8 pb-12">
             <div className="mb-6 items-center px-5 flex flex-col gap-2">
@@ -91,7 +91,7 @@ const Search = () => {
                       {item.name}
                     </p>
 
-                    <Link to={`/doctor/${item.name}`} className="w-full">
+                    <Link to={`/doctor/${item.id}`} className="w-full">
                       <Button className="mt-1 bg-white text-blue-600 hover:bg-white w-full">
                         Book Now
                       </Button>

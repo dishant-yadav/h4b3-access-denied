@@ -41,11 +41,11 @@ const router = createBrowserRouter([
     element: <Prescription />,
   },
   {
-    path: "/doctor/:name",
+    path: "/doctor/:id",
     element: <DoctorPage />,
   },
   {
-    path: "/booking",
+    path: "/booking/",
     element: <AppointmentBooking />,
   },
   {
@@ -62,7 +62,7 @@ const App = () => {
   return (
     <div className="App">
       <RouterProvider router={router} />
-    
+
     </div>
   );
 }

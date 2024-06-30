@@ -18,8 +18,8 @@ const LoginPatient = () => {
         "http://localhost:3050/patientauth/login",
         userData
       );
-      console.log("Patient Login with:", response);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      console.log("Patient Login with:", response.data.patient);
+      localStorage.setItem("userData", JSON.stringify(response.data.patient));
       localStorage.setItem("user", "Patient");
     } catch (e) {
       console.log(e);
@@ -70,7 +70,7 @@ const LoginPatient = () => {
 
           <div className="text-center text-lg mt-5 font-bold text-blue-600">
             <a href="/signup/patient" className="mt-40 text-sm">
-              <span className="text-gray-600">Don't have an Account?</span> 
+              <span className="text-gray-600">Don't have an Account?</span>
               <span className="underline"> Sign Up</span>
             </a>
           </div>

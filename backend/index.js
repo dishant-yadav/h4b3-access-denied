@@ -29,7 +29,7 @@ const appointmentRoutes = require('./router/appointmentBooking');
 const app = express();
 const server = require('http').createServer(app);
 
-const PORT = 3050;
+const PORT = process.env.PORT ?? 3050;
 const FRONTEND = "http://localhost:5173";
 
 const io = new SocketServer(server, {

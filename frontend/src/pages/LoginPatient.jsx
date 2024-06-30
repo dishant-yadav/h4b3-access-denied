@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const LoginPatient = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -15,7 +18,7 @@ const LoginPatient = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3050/patientauth/login",
+        `${BASE_URL}/patientauth/login`,
         userData
       );
       console.log("Patient Login with:", response.data.patient);

@@ -4,6 +4,8 @@ import { ClipboardPlus, Facebook, Linkedin, ShieldCheck, Stethoscope, Twitter, U
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 // import { doctors } from "@/constants/info";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
 
 const DoctorPage = () => {
   const { id } = useParams();
@@ -19,7 +21,7 @@ const DoctorPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`http://localhost:3050/doctors/${id}`)
+        const resp = await axios.get(`${BASE_URL}/doctors/${id}`)
         console.log(resp.data)
         setDoctor(resp.data)
       }

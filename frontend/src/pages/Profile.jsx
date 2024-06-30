@@ -5,6 +5,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+
 const Profile = () => {
   const [profileData, setProfileData] = useState({
     firstName: "",
@@ -48,7 +51,7 @@ const Profile = () => {
       bloodPressure: profileData.bloodPressure
     };
     try {
-      const response = await axios.post("http://localhost:3050/patients/post", data);
+      const response = await axios.post(`${BASE_URL}/patients/post`, data);
       console.log(response.data);
     } catch (error) {
       console.error("There was an error submitting the form!", error);

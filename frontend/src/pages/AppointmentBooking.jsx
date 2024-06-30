@@ -5,7 +5,9 @@ import { patients } from "@/data";
 import axios from "axios";
 import { CalendarDays, ClipboardPlus, Clock } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
 
 const AppointmentBooking = () => {
   const { state } = useLocation()
@@ -15,19 +17,23 @@ const AppointmentBooking = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
   const [notes, setNote] = useState();
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const dateData = new Date(date);
     const data = {
-      date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}}`,
+      date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}`,
       time: selectedTimeSlot,
       doctor: doctor,
       patient: JSON.parse(localStorage.getItem("userData"))._id,
       notes: notes
     }
     console.log(data)
-    const resp = await axios.post("http://localhost:3050/api/appointments/slots/create", data)
+    const resp = await axios.post(`${BASE_URL}/api/appointments/slots/create`, data)
     console.log(resp.data)
+
+    navigate("/appointments")
   }
 
   useEffect(() => {
@@ -38,7 +44,7 @@ const AppointmentBooking = () => {
     const dateData = new Date(date);
 
     try {
-      const resp = await axios.post("http://localhost:3050/api/appointments/slots", {
+      const resp = await axios.post(`${BASE_URL}/api/appointments/slots`, {
         doctor: doctor,
         date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}}`
       })

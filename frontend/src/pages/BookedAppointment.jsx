@@ -26,7 +26,7 @@ const BookedAppointment = ({ appointment, closeModal }) => {
             <h2 className="text-xl font-bold">{appointment.patient.name}</h2>
           )}
           <p className="text-lg">Date: {appointment.date}</p>
-          <p className="text-lg">Time: {appointment.slot.time}</p>
+          <p className="text-lg">Time: {appointment.time}</p>
           <p className="text-lg">Notes: {appointment.notes}</p>
         </div>
         <Link to={`/meet/${appointment.id}`}>

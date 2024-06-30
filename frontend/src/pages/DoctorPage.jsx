@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ClipboardPlus, Facebook, Linkedin, ShieldCheck, Stethoscope, Twitter, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { doctors } from "@/constants/info";
+import axios from "axios";
+// import { doctors } from "@/constants/info";
 
 const DoctorPage = () => {
   const { id } = useParams();
-  const doctor = doctors.find((doctor) => doctor.id === id);
+
+  const [doctor, setDoctor] = useState([]);
 
   const navigate = useNavigate()
 
@@ -14,17 +16,32 @@ const DoctorPage = () => {
     return <div>Doctor not found</div>;
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get(`http://localhost:3050/doctors/${id}`)
+        console.log(resp.data)
+        setDoctor(resp.data)
+      }
+      catch (e) {
+        console.log(e)
+        setDoctor([])
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <section className="flex gap-8 px-8 py-12 bg-white h-screen">
       <div className="flex flex-col items-center px-8 py-8 bg-gradient-to-r from-sky-400 to-blue-500 w-[22%] rounded-lg shadow-md">
         <img
-          src={doctor.image}
+          src={doctor.profilePhoto}
           alt={doctor.name}
           className="h-40 w-40 rounded-full"
         />
 
         <h1 className="text-2xl font-semibold mt-6 text-white">{doctor.name}</h1>
-        <p className="text-lg font-medium">{doctor.speciality}</p>
+        <p className="text-lg font-medium">{doctor.specialty}</p>
         <p className="text-lg font-medium mt-2">{doctor.qualification}</p>
         <div className="flex gap-4 mt-6">
           <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center text-blue-600 transition ease-in-out delay-150 hover:scale-110 duration-300 cursor-pointer">
@@ -41,7 +58,7 @@ const DoctorPage = () => {
         <Button onClick={() => {
           navigate("/booking", {
             state: {
-              doctor: doctor.id
+              doctor: doctor._id
             }
           })
         }} className="mt-6 bg-white text-blue-600 text-lg hover:bg-white transition ease-in-out delay-150 hover:scale-110 duration-300">
@@ -52,7 +69,7 @@ const DoctorPage = () => {
       <div className="w-[70%]">
         <div className="w-full p-6 border-2 border-blue-500  rounded-lg">
           <h1 className="text-2xl font-semibold">About Me</h1>
-          <p className="text-lg font-medium mt-4">{doctor.description}</p>
+          <p className="text-lg font-medium mt-4">{doctor.bio}</p>
         </div>
         <div className="w-full p-6 border-2 border-blue-500 rounded-lg mt-8">
           <h1 className="text-2xl font-semibold">Report</h1>

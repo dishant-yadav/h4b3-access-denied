@@ -1,20 +1,17 @@
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import { Button } from "@/components/ui/button";
-import { doctors } from "@/constants/info";
+// import { doctors } from "@/constants/info";
 import { BriefcaseMedical, UserSearch } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
+import axios from "axios";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [doctors, setDoctors] = useState([])
 
-  const filteredDoctors = searchQuery
-    ? doctors.filter((doctor) =>
-      doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    : doctors;
 
   const departments = [
     "Dermatology",
@@ -27,6 +24,31 @@ const Search = () => {
     "ENT",
     "Gastroenterology",
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get("http://localhost:3050/doctors/get")
+        setDoctors(resp.data)
+      }
+      catch (e) {
+        console.log(e)
+        setDoctors([])
+      }
+    }
+    fetchData()
+    // setDoctors(fetchData())
+  }, [])
+
+  useEffect(() => {
+    console.log(doctors)
+  }, [doctors])
+
+  const filteredDoctors = searchQuery
+    ? doctors.filter((doctor) =>
+      doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : doctors;
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -74,13 +96,13 @@ const Search = () => {
             <div className="flex flex-col mt-6">
               <h1 className="text-2xl font-semibold">Popular Doctors</h1>
               <div className="flex justify-center items-center gap-8 mt-8">
-                {filteredDoctors.map((item, index) => (
+                {doctors.length > 0 && doctors.map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col justify-center gap-1 px-6 py-4 bg-blue-500 shadow-lg rounded-lg transition ease-in-out delay-150 hover:scale-110 duration-300"
                   >
                     <img
-                      src={item.image}
+                      src={item.profilePhoto}
                       className="h-40 w-40 rounded-full"
                       alt="doctor"
                     />
@@ -91,7 +113,7 @@ const Search = () => {
                       {item.name}
                     </p>
 
-                    <Link to={`/doctor/${item.id}`} className="w-full">
+                    <Link to={`/doctor/${item._id}`} className="w-full">
                       <Button className="mt-1 bg-white text-blue-600 hover:bg-white w-full">
                         Book Now
                       </Button>

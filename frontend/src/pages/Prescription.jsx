@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import ReactDOMServer from 'react-dom/server';
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import html2pdf from 'html2pdf.js/dist/html2pdf.min';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';

@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 const BookedAppointment = ({ appointment, closeModal }) => {
   const user = localStorage.getItem("user");
 
+  const handleId = () => {
+    localStorage.setItem("id", appointment.id);
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-brightness-50 backdrop-blur">
       <div className="bg-white p-6 rounded-lg w-1/4 flex flex-col gap-6">
@@ -26,7 +30,7 @@ const BookedAppointment = ({ appointment, closeModal }) => {
           <p className="text-lg">Notes: {appointment.notes}</p>
         </div>
         <Link to={`/meet/${appointment.id}`}>
-          <Button className="text-lg bg-blue-500 hover:bg-blue-600">
+          <Button className="text-lg bg-blue-500 hover:bg-blue-600" onClick={handleId}>
             Join Call
           </Button>
         </Link>

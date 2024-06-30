@@ -43,10 +43,17 @@ const AppointmentBooking = () => {
   const getTime = async () => {
     const dateData = new Date(date);
 
+    function convertToTwo(day) {
+      if (day < 10) {
+        return `0${day}`
+      }
+      return day
+    }
+
     try {
       const resp = await axios.post(`${BASE_URL}/api/appointments/slots`, {
         doctor: doctor,
-        date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}}`
+        date: `${dateData.getFullYear()}/${convertToTwo(dateData.getMonth() + 1)}/${dateData.getDate()}}`
       })
       // console.log(resp.data.data)
       setTimeSlot(resp.data.data);
@@ -103,6 +110,7 @@ const AppointmentBooking = () => {
               ${item.time === selectedTimeSlot ? "bg-blue-600 text-white" : ""}
               ${item.isBooked ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "hover:bg-blue-600 hover:text-white"}`}
                   >
+                    {console.log(item.time + " " + item.isBooked)}
                     {item.time}
                   </h2>
 

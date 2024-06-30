@@ -10,7 +10,7 @@ const JWT_SECRET = 'civiryvrbouvbacsvftwflawyf'; // Example, consider using envi
 // Register a new doctor
 router.post('/register', async (req, res) => {
   try {
-    const { name, profilePhoto, registrationNumber, specialty, qualification, bio, phone, address, email, availability, password } = req.body;
+    const { name, profilePhoto, registrationNumber, specialty, qualification, bio, phone, address, email, password } = req.body;
 
     // Check if the email already exists
     const existingDoctor = await Doctor.findOne({ email });
@@ -32,7 +32,6 @@ router.post('/register', async (req, res) => {
       phone,
       address,
       email,
-      availability,
       password: hashedPassword // Store the hashed password
     });
 

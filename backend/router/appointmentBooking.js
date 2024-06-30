@@ -9,6 +9,23 @@ const slotServices = require('../services/slotServices');
 
 const router = express.Router();
 
+
+// get all appointments by appointment id
+
+router.get('/:id', async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id).populate('doctor').populate('patient');
+    if (!appointment) {
+      throw new Error('Appointment not found');
+    }
+    res.status(200).json(response(true, appointment));
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(response(false, error));
+  }
+})
+
+
 // fetch all slots for a doctor for a given date
 router.get('/slots', async (req, res) => {
   try {
@@ -35,7 +52,7 @@ router.get('/slots', async (req, res) => {
 // Create slots for a doctor
 router.post('/slots/create', async (req, res) => {
   try {
-    const { doctor, patient, date, time, notes, appointment } = req.body;
+    const { doctor, patient, date, time, notes } = req.body;
 
     const Dbdoctor = await Doctor.findById(doctor);
     if (!Dbdoctor) {
@@ -49,10 +66,22 @@ router.post('/slots/create', async (req, res) => {
       throw new Error('Slot already exists');
     }
 
+    // CREATE APPOINTMENT
+
+    const appointment = new Appointment({
+      doctor,
+      patient,
+      date,
+      time,
+      notes
+    });
+
+    await appointment.save();
+
     const slot = await slotServices.createSlot({ doctor, patient, date, time, notes });
     console.log(slot);
 
-    res.status(201).json(response(true, slot));
+    res.status(201).json(response(true, appointment));
   } catch (error) {
     res.json(response(false, error));
   }

@@ -35,10 +35,12 @@ const AppointmentBooking = () => {
   }, []);
 
   const getTime = async () => {
+    const dateData = new Date(date);
+
     try {
       const resp = await axios.post("http://localhost:3050/api/appointments/slots", {
-        doctor: "66805370e2da3025fb3c403e",
-        date: "2024/12/13"
+        doctor: doctor,
+        date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}}`
       })
       // console.log(resp.data.data)
       setTimeSlot(resp.data.data);
@@ -89,16 +91,15 @@ const AppointmentBooking = () => {
                 {timeSlot?.map((item, index) => (
                   <h2
                     key={index}
-                    onClick={() => setSelectedTimeSlot(item.time)}
-                    className={`p-2 border cursor-pointer
-                            text-center shadow-sm hover:bg-blue-600 hover:text-white
-                            rounded-full
-                            ${item.time == selectedTimeSlot &&
-                      "bg-blue-600 text-white"
-                      }`}
+                    onClick={() => !item.isBooked && setSelectedTimeSlot(item.time)}
+                    className={`p-2 border cursor-pointer text-center shadow-sm 
+              rounded-full 
+              ${item.time === selectedTimeSlot ? "bg-blue-600 text-white" : ""}
+              ${item.isBooked ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "hover:bg-blue-600 hover:text-white"}`}
                   >
                     {item.time}
                   </h2>
+
                 ))}
               </div>
             </div>

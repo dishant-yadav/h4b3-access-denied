@@ -18,8 +18,8 @@ const LoginPatient = () => {
         "http://localhost:3050/patientauth/login",
         userData
       );
-      console.log("Patient Login with:", response);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      console.log("Patient Login with:", response.data.patient);
+      localStorage.setItem("userData", JSON.stringify(response.data.patient));
       localStorage.setItem("user", "Patient");
     } catch (e) {
       console.log(e);

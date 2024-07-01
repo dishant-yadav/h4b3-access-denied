@@ -5,6 +5,7 @@ const PatientSchema = new Schema({
   name: {
     type: String,
     required: false,
+    default: "Patient"
   },
   email: {
     type: String,

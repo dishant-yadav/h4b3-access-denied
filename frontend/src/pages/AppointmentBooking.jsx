@@ -18,12 +18,18 @@ const AppointmentBooking = () => {
   const [notes, setNote] = useState();
 
   const navigate = useNavigate()
+  const convertToTwo = (day) => {
+    if (day < 10) {
+      return `0${day}`
+    }
+    return day
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const dateData = new Date(date);
     const data = {
-      date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}`,
+      date: `${dateData.getFullYear()}/${convertToTwo(dateData.getMonth() + 1)}/${dateData.getDate()}`,
       time: selectedTimeSlot,
       doctor: doctor,
       patient: JSON.parse(localStorage.getItem("userData"))._id,
@@ -43,17 +49,12 @@ const AppointmentBooking = () => {
   const getTime = async () => {
     const dateData = new Date(date);
 
-    function convertToTwo(day) {
-      if (day < 10) {
-        return `0${day}`
-      }
-      return day
-    }
+
 
     try {
       const resp = await axios.post(`${BASE_URL}/api/appointments/slots`, {
         doctor: doctor,
-        date: `${dateData.getFullYear()}/${convertToTwo(dateData.getMonth() + 1)}/${dateData.getDate()}}`
+        date: `${dateData.getFullYear()}/${dateData.getMonth() + 1}/${dateData.getDate()}}`
       })
       // console.log(resp.data.data)
       setTimeSlot(resp.data.data);

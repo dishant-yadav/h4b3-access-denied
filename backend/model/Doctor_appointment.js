@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const DoctorSchema = new Schema({
   name: {
     type: String,
-    required: false
+    required: false,
+    default: "Doctor"
   },
   profilePhoto: {
     type: String,

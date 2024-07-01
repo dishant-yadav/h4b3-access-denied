@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { getFormattedDate } from "@/utils"
 
 const BookedAppointment = ({ appointment, closeModal }) => {
   const user = localStorage.getItem("user");
@@ -21,11 +22,11 @@ const BookedAppointment = ({ appointment, closeModal }) => {
         </div>
         <div>
           {user === "Patient" ? (
-            <h2 className="text-xl font-bold">{appointment.doctor.name}</h2>
+            <h2 className="text-xl font-bold">{appointment?.doctor?.name}</h2>
           ) : (
-            <h2 className="text-xl font-bold">{appointment.patient.name}</h2>
+            <h2 className="text-xl font-bold">{appointment?.patient?.name}</h2>
           )}
-          <p className="text-lg">Date: {appointment.date}</p>
+          <p className="text-lg">Date: {getFormattedDate(appointment.date)}</p>
           <p className="text-lg">Time: {appointment.time}</p>
           <p className="text-lg">Notes: {appointment.notes}</p>
         </div>

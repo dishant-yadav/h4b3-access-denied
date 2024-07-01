@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import BookedAppointment from "./BookedAppointment";
 import axios from "axios";
+import { getFormattedDate } from "@/utils"
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL
-
 
 // const appointments = [
 //   {
@@ -122,14 +122,14 @@ const Appointments = () => {
                 <div>
                   {user === "Patient" ? (
                     <h1 className="text-black font-semibold text-xl mb-2">
-                      {item.doctor.name}
+                      {item?.doctor?.name}
                     </h1>
                   ) : (
                     <h1 className="text-black font-semibold text-xl mb-2">
-                      {item.patient.name}
+                      {item?.patient?.name}
                     </h1>
                   )}
-                  <p className="text-lg font-medium">Date: {item.date}</p>
+                  <p className="text-lg font-medium">Date: {getFormattedDate(item.date)}</p>
                   <p className="text-lg font-medium">Time: {item.time}</p>
                 </div>
                 <div className="mr-6 flex gap-3">
